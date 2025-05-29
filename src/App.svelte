@@ -1,47 +1,73 @@
-<script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+<script>
+  import router from 'page';
+  import NavigateButton from './components/NavigateButton.svelte';
+  import HomeIcon from './assets/homeIcon.svg';
+  import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
+  import routes from './routes';
+  let page;
+  let params;
+
+  routes.forEach((route) => {
+    router(
+      route.path,
+      (ctx, next) => {
+        params = ctx.params;
+        next();
+      },
+
+      () => {
+        page = route.component;
+      },
+    );
+  });
+
+  router.start();
 </script>
 
-<main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+<header class="header">
+  <h1 class="header__title">
+    Mera-rebench: A Continuously Evolving and Decontaminated Benchmark for
+    Software Engineering LLMs
+  </h1>
+  <nav class="header__navigate">
+    <NavigateButton buttonText="Home" imgSrc={HomeIcon} link="/" />
+    <NavigateButton
+      buttonText="Leaderboard"
+      imgSrc={LeaderBoardIcon}
+      link="/leaderboard"
+    />
+  </nav>
+</header>
 
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+<main class="main-wrapper">
+  <svelte:component this={page} {params} />
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  .main-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 100px;
+    max-width: 960px;
+    text-align: center;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
+
+  .header__title {
+    font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
+    font-weight: 800;
   }
-  .read-the-docs {
-    color: #888;
+
+  .header__navigate {
+    display: flex;
+    gap: 10px;
   }
 </style>

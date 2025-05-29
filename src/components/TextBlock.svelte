@@ -1,0 +1,30 @@
+<script lang="ts">
+  import type { Component } from 'svelte';
+
+  interface TextBlockProps {
+    headerBlock: string;
+  }
+
+  const { headerBlock }: TextBlockProps = $props();
+</script>
+
+<div class="text-wrapper">
+  <h2 class="text__header">{headerBlock}</h2>
+  <slot />
+</div>
+
+<style>
+  .text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    max-width: 960px;
+  }
+
+  .text__header {
+    font-weight: 400;
+    font-size: clamp(1.25rem, 0.7266rem + 1.9704vw, 2.5rem);
+  }
+</style>
