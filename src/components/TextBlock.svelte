@@ -21,6 +21,7 @@
     gap: 30px;
     margin-bottom: 30px;
     max-width: 960px;
+    font-size: clamp(0.625rem, 0.3633rem + 0.9852vw, 1.25rem);
   }
 
   .text__header {
