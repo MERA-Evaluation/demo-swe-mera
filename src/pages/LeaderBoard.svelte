@@ -26,7 +26,6 @@
 
 <section class="section-leaderboard">
   <RangeSlider bind:values max={100} min={0} step={1} />
-  <pre class="status">Value: {values[0]} - {values[1]}</pre>
 
   <DataTable
   headers={[
