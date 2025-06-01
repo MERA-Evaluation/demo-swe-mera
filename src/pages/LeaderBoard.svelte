@@ -1,5 +1,4 @@
 <script>
-  import RangeSlider from 'svelte-range-slider-pips';
   import "carbon-components-svelte/css/white.css";
   import {
     DataTable,
@@ -8,6 +7,7 @@
     ToolbarSearch,
     Pagination,
   } from "carbon-components-svelte";
+  import RangeSlider from "../components/RangeSlider.svelte";
   let values = [4, 6];
 
   let rows = Array.from({ length: 10 }).map((_, i) => ({
@@ -25,7 +25,10 @@
 </script>
 
 <section class="section-leaderboard">
-  <RangeSlider bind:values max={100} min={0} step={1} />
+  <!-- <RangeSlider bind:values max={100} min={0} step={1} pips/> -->
+    <div class="slider-wrapper">
+      <RangeSlider bind:values range float pips all='label' />
+    </div>
 
   <DataTable
   headers={[
@@ -70,5 +73,9 @@
     min-height: 800px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
+  }
+
+  .slider-wrapper {
+    margin: 20px 0;
   }
 </style>
