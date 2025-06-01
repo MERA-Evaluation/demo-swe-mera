@@ -25,7 +25,7 @@
   const startDate = new Date('2025-02-26');
   const endDate = new Date('2025-06-04');
 
-  onMount(async () => {
+  onMount(() => {
     const reshaped = reshapeColumnJson(modelsData)
     console.log(reshaped)
     const filtered = filterByDate(reshaped, startDate, endDate);
