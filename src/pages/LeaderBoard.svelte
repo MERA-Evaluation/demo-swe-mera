@@ -1,64 +1,151 @@
-<script>
-  import "carbon-components-svelte/css/white.css";
-  import {
-    DataTable,
-    Toolbar,
-    ToolbarContent,
-    ToolbarSearch,
-    Pagination,
-  } from "carbon-components-svelte";
-  import RangeSlider from "../components/RangeSlider.svelte";
-  let values = [4, 6];
+<script lang="ts">
+  import modelsData from './data/sample000.json';
+  import RangeSlider from '../components/RangeSlider.svelte';
+  import { onMount } from 'svelte';
 
-  let rows = Array.from({ length: 10 }).map((_, i) => ({
-    id: i,
-    name: "Load Balancer " + (i + 1),
-    protocol: "HTTP",
-    port: 3000 + i * 10,
-    rule: i % 2 ? "Round robin" : "DNS delegation",
-  }));
-  let pageSize = 5;
-  let page = 1;
-  let filteredRowIds = [];
+  interface DataRow {
+    model: string;
+    date: string;
+    'pass@1': number;
+    'pass@5': number;
+    task_id?: string;
+  }
 
-  $: console.log("filteredRowIds", filteredRowIds);
+  interface SummaryRow {
+    model: string;
+    'pass@1': number;
+    pass1_std: number;
+    'pass@5': number;
+    n_task: number;
+    trajectory: string;
+  }
+
+  let summary: SummaryRow[] = [];
+  let filtered: SummaryRow[] = [];
+
+  let allData: DataRow[] = [];
+  let loading = true;
+
+  // date range: [timestamp, timestamp]
+  let dateRange = [
+    new Date('2025-02-26').getTime(),
+    new Date('2025-06-04').getTime()
+  ];
+
+  // Преобразуем JSON с колонками в массив DataRow
+  function reshapeColumnJson(obj: any): DataRow[] {
+    const keys = Object.keys(obj);
+    const length = Object.values(obj[keys[0]]).length;
+    const result: DataRow[] = [];
+
+    for (let i = 0; i < length; i++) {
+      const row: any = {};
+      for (const key of keys) {
+        row[key] = obj[key][i];
+      }
+      result.push(row as DataRow);
+    }
+
+    return result;
+  }
+
+  function summarize(data: DataRow[]): SummaryRow[] {
+    const grouped: Record<string, DataRow[]> = {};
+    data.forEach(row => {
+      grouped[row.model] ||= [];
+      grouped[row.model].push(row);
+    });
+
+    const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
+    const std = (arr: number[]) => {
+      const m = mean(arr);
+      return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length);
+    };
+
+    return Object.entries(grouped).map(([model, rows]) => {
+      const pass1 = rows.map(r => r['pass@1']);
+      const pass5 = rows.map(r => r['pass@5']);
+      const n = rows.length;
+
+      return {
+        model,
+        'pass@1': mean(pass1),
+        pass1_std: std(pass1) / Math.sqrt(n),
+        'pass@5': mean(pass5),
+        n_task: n,
+        trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`
+      };
+    });
+  }
+
+  function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
+    return data.filter(row => {
+      const d = new Date(row.date);
+      return d >= start && d <= end;
+    });
+  }
+
+  // Загрузка и первичная агрегация
+  onMount(() => {
+    allData = reshapeColumnJson(modelsData);
+    const filteredData = filterByDate(
+      allData,
+      new Date(dateRange[0]),
+      new Date(dateRange[1])
+    );
+    summary = summarize(filteredData);
+    filtered = [...summary];
+    loading = false;
+  });
+
+  // Реакция на изменение диапазона
+  $: if (allData.length && dateRange) {
+    const filteredData = filterByDate(
+      allData,
+      new Date(dateRange[0]),
+      new Date(dateRange[1])
+    );
+    summary = summarize(filteredData);
+    filtered = [...summary];
+  }
 </script>
 
 <section class="section-leaderboard">
-  <!-- <RangeSlider bind:values max={100} min={0} step={1} pips/> -->
-    <div class="slider-wrapper">
-      <RangeSlider bind:values range float pips all='label' />
-    </div>
+  <div class="slider-wrapper">
+    <!-- step в один день -->
+    <RangeSlider
+      bind:values={dateRange}
+      range
+      float
+      all="label"
+      min={new Date('2025-02-26').getTime()}
+      max={new Date('2025-06-04').getTime()}
+      step={1000 * 60 * 60 * 24}
+    />
+  </div>
 
-  <DataTable
-  headers={[
-    { key: "name", value: "Name" },
-    { key: "protocol", value: "Protocol" },
-    { key: "port", value: "Port" },
-    { key: "rule", value: "Rule" },
-  ]}
-  {rows}
-  {pageSize}
-  {page}
->
-  <Toolbar>
-    <ToolbarContent>
-      <ToolbarSearch
-        persistent
-        value="round"
-        shouldFilterRows
-        bind:filteredRowIds
-      />
-    </ToolbarContent>
-  </Toolbar>
-</DataTable>
-
-<Pagination
-  bind:pageSize
-  bind:page
-  totalItems={filteredRowIds.length}
-  pageSizeInputDisabled
-/>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>pass@1</th>
+          <th>pass@5</th>
+          <th>Tasks</th>
+          <th>Trajectory</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each filtered as row}
+          <tr>
+            <td>{row.model}</td>
+            <td>{row['pass@1'].toFixed(3)}</td>
+            <td>{row['pass@5'].toFixed(3)}</td>
+            <td>{row.n_task}</td>
+            <td><a href={row.trajectory} target="_blank">link</a></td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
 </section>
 
 <style>
@@ -77,5 +164,21 @@
 
   .slider-wrapper {
     margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 0.4rem 0.8rem;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
   }
 </style>

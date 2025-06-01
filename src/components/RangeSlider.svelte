@@ -3,7 +3,6 @@
   import { createEventDispatcher } from "svelte";
   import RangePips from "./RangePips.svelte";
 
-  // range slider props
   export let range = false;
   export let pushy = false;
   export let min = 0;
@@ -16,7 +15,6 @@
   export let hoverable = true;
   export let disabled = false;
 
-  // range pips / values props
   export let pips = false;
   export let pipstep = undefined;
   export let all = undefined;
@@ -24,24 +22,20 @@
   export let last = undefined;
   export let rest = undefined;
 
-  // formatting props
   export let id = undefined;
   export let prefix = "";
   export let suffix = "";
   export let formatter = (v,i,p) => v;
   export let handleFormatter = formatter;
 
-  // stylistic props
   export let precision = 2;
   export let springValues = { stiffness: 0.15, damping: 0.4 };
 
-  // prepare dispatched events
+
   const dispatch = createEventDispatcher();
 
-  // dom references
   let slider;
 
-  // state management
   let valueLength = 0;
   let focus = false;
   let handleActivated = false;
@@ -51,45 +45,25 @@
   let startValue;
   let previousValue;
 
-  // copy the initial values in to a spring function which
-  // will update every time the values array is modified
-
   let springPositions;
 
   $: {
 
-    // check that "values" is an array, or set it as array
-    // to prevent any errors in springs, or range trimming
     if ( !Array.isArray( values ) ) {
       values = [(max + min) / 2];
       console.error( "'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)" );
     }
-    // trim the range so it remains as a min/max (only 2 handles)
-    // and also align the handles to the steps
-    values = trimRange(values.map((v) => alignValueToStep(v)));
 
-    // check if the valueLength (length of values[]) has changed,
-    // because if so we need to re-seed the spring function with the
-    // new values array.
+    values = trimRange(values.map((v) => alignValueToStep(v)));
     if ( valueLength !== values.length ) {
-      // set the initial spring values when the slider initialises,
-      // or when values array length has changed
       springPositions = spring(values.map((v) => percentOf(v)), springValues );
     } else {
-      // update the value of the spring function for animated handles
-      // whenever the values has updated
       springPositions.set(values.map((v) => percentOf(v)));
     }
-    // set the valueLength for the next check
     valueLength = values.length;
   };
 
-  /**
-   * take in a value, and then calculate that value's percentage
-   * of the overall range (min-max);
-   * @param {number} val the value we're getting percent for
-   * @return {number} the percentage value
-   **/
+
   $: percentOf = function (val) {
     let perc = ((val - min) / (max - min)) * 100;
     if (isNaN(perc) || perc <= 0) {
@@ -101,60 +75,34 @@
     }
   };
 
-  /**
-   * clamp a value from the range so that it always
-   * falls within the min/max values
-   * @param {number} val the value to clamp
-   * @return {number} the value after it's been clamped
-   **/
+
   $: clampValue = function (val) {
-    // return the min/max if outside of that range
     return val <= min ? min : val >= max ? max : val;
   };
 
-  /**
-   * align the value with the steps so that it
-   * always sits on the closest (above/below) step
-   * @param {number} val the value to align
-   * @return {number} the value after it's been aligned
-   **/
+
   $: alignValueToStep = function (val) {
-    // sanity check for performance
     if (val <= min) {
       return min;
     } else if (val >= max) {
       return max;
     }
 
-    // find the middle-point between steps
-    // and see if the value is closer to the
-    // next step, or previous step
     let remainder = (val - min) % step;
     let aligned = val - remainder;
     if (Math.abs(remainder) * 2 >= step) {
       aligned += remainder > 0 ? step : -step;
     }
-    // make sure the value is within acceptable limits
     aligned = clampValue(aligned);
-    // make sure the returned value is set to the precision desired
-    // this is also because javascript often returns weird floats
-    // when dealing with odd numbers and percentages
+
 
     return parseFloat(aligned.toFixed(precision));
   };
 
-  /**
-   * the orientation of the handles/pips based on the
-   * input values of vertical and reversed
-   **/
+
   $: orientationStart = vertical ? reversed ? 'top' : 'bottom' : reversed ? 'right' : 'left';
   $: orientationEnd = vertical ? reversed ? 'bottom' : 'top' : reversed ? 'left' : 'right';
 
-  /**
-   * helper func to get the index of an element in it's DOM container
-   * @param {object} el dom object reference we want the index of
-   * @returns {number} the index of the input element
-   **/
   function index(el) {
     if (!el) return -1;
     var i = 0;
@@ -164,12 +112,6 @@
     return i;
   }
 
-  /**
-   * normalise a mouse or touch event to return the
-   * client (x/y) object for that event
-   * @param {event} e a mouse/touch event to normalise
-   * @returns {object} normalised event client object (x,y)
-   **/
   function normalisedClient(e) {
     if (e.type.includes("touch")) {
       return e.touches[0];
@@ -178,11 +120,6 @@
     }
   }
 
-  /**
-   * check if an element is a handle on the slider
-   * @param {object} el dom object reference we want to check
-   * @returns {boolean}
-   **/
   function targetIsHandle(el) {
     const handles = slider.querySelectorAll(".handle");
     const isHandle = Array.prototype.includes.call(handles, el);
@@ -190,14 +127,6 @@
     return isHandle || isChild;
   }
 
-  /**
-   * trim the values array based on whether the property
-   * for 'range' is 'min', 'max', or truthy. This is because we
-   * do not want more than one handle for a min/max range, and we do
-   * not want more than two handles for a true range.
-   * @param {array} values the input values for the rangeSlider
-   * @return {array} the range array for creating a rangeSlider
-   **/
   function trimRange(values) {
     if (range === "min" || range === "max") {
       return values.slice(0, 1);
@@ -208,25 +137,12 @@
     }
   }
 
-  /**
-   * helper to return the slider dimensions for finding
-   * the closest handle to user interaction
-   * @return {object} the range slider DOM client rect
-   **/
   function getSliderDimensions() {
     return slider.getBoundingClientRect();
   }
 
-  /**
-   * helper to return closest handle to user interaction
-   * @param {object} clientPos the client{x,y} positions to check against
-   * @return {number} the index of the closest handle to clientPos
-   **/
   function getClosestHandle(clientPos) {
-    // first make sure we have the latest dimensions
-    // of the slider, as it may have changed size
     const dims = getSliderDimensions();
-    // calculate the interaction position, percent and value
     let handlePos = 0;
     let handlePercent = 0;
     let handleVal = 0;
@@ -243,18 +159,13 @@
 
     let closest;
 
-    // if we have a range, and the handles are at the same
-    // position, we want a simple check if the interaction
-    // value is greater than return the second handle
     if (range === true && values[0] === values[1]) {
       if (handleVal > values[1]) {
         return 1;
       } else {
         return 0;
       }
-      // if there are multiple handles, and not a range, then
-      // we sort the handles values, and return the first one closest
-      // to the interaction value
+
     } else {
       closest = values.indexOf(
         [...values].sort((a, b) => Math.abs(handleVal - a) - Math.abs(handleVal - b))[0]
@@ -263,18 +174,9 @@
     return closest;
   }
 
-  /**
-   * take the interaction position on the slider, convert
-   * it to a value on the range, and then send that value
-   * through to the moveHandle() method to set the active
-   * handle's position
-   * @param {object} clientPos the client{x,y} of the interaction
-   **/
+
   function handleInteract(clientPos) {
-    // first make sure we have the latest dimensions
-    // of the slider, as it may have changed size
     const dims = getSliderDimensions();
-    // calculate the interaction position, percent and value
     let handlePos = 0;
     let handlePercent = 0;
     let handleVal = 0;
@@ -288,28 +190,15 @@
       handlePercent = reversed ? 100 - handlePercent : handlePercent;
     }
     handleVal = ((max - min) / 100) * handlePercent + min;
-    // move handle to the value
     moveHandle(activeHandle, handleVal);
   }
 
-  /**
-   * move a handle to a specific value, respecting the clamp/align rules
-   * @param {number} index the index of the handle we want to move
-   * @param {number} value the value to move the handle to
-   * @return {number} the value that was moved to (after alignment/clamping)
-   **/
   function moveHandle(index, value) {
-    // align & clamp the value so we're not doing extra
-    // calculation on an out-of-range value down below
     value = alignValueToStep(value);
-    // use the active handle if handle index is not provided
     if ( typeof index === 'undefined' ) {
       index = activeHandle;
     }
-    // if this is a range slider perform special checks
     if (range) {
-      // restrict the handles of a range-slider from
-      // going past one-another unless "pushy" is true
       if (index === 0 && value > values[1]) {
         if (pushy) {
           values[1] = value;
@@ -325,13 +214,10 @@
       }
     }
 
-    // if the value has changed, update it
     if (values[index] !== value) {
       values[index] = value;
     }
 
-    // fire the change event when the handle moves,
-    // and store the previous value for the next time
     if (previousValue !== value) {
       eChange();
       previousValue = value;
@@ -339,11 +225,6 @@
     return value;
   }
 
-  /**
-   * helper to find the beginning range value for use with css style
-   * @param {array} values the input values for the rangeSlider
-   * @return {number} the beginning of the range
-   **/
   function rangeStart(values) {
     if (range === "min") {
       return 0;
@@ -352,11 +233,6 @@
     }
   }
 
-  /**
-   * helper to find the ending range value for use with css style
-   * @param {array} values the input values for the rangeSlider
-   * @return {number} the end of the range
-   **/
   function rangeEnd(values) {
     if (range === "max") {
       return 0;
@@ -366,12 +242,7 @@
       return 100 - values[1];
     }
   }
-
-  /**
-   * when the user has unfocussed (blurred) from the
-   * slider, deactivate all handles
-   * @param {event} e the event from browser
-   **/
+  
   function sliderBlurHandle(e) {
     if (keyboardActive) {
       focus = false;
@@ -380,11 +251,6 @@
     }
   }
 
-  /**
-   * when the user focusses the handle of a slider
-   * set it to be active
-   * @param {event} e the event from browser
-   **/
   function sliderFocusHandle(e) {
     if ( !disabled ) {
       activeHandle = index(e.target);
@@ -392,11 +258,6 @@
     }
   }
 
-  /**
-   * handle the keyboard accessible features by checking the
-   * input type, and modfier key then moving handle by appropriate amount
-   * @param {event} e the event from browser
-   **/
   function sliderKeydown(e) {
     if ( !disabled ) {
       const handle = index(e.target);
@@ -434,38 +295,23 @@
     }
   }
 
-  /**
-   * function to run when the user touches
-   * down on the slider element anywhere
-   * @param {event} e the event from browser
-   **/
   function sliderInteractStart(e) {
     if ( !disabled ) {
       const el = e.target;
       const clientPos = normalisedClient(e);
-      // set the closest handle as active
       focus = true;
       handleActivated = true;
       handlePressed = true;
       activeHandle = getClosestHandle(clientPos);
 
-      // fire the start event
       startValue = previousValue = alignValueToStep(values[activeHandle]);
       eStart();
-
-      // for touch devices we want the handle to instantly
-      // move to the position touched for more responsive feeling
       if (e.type === "touchstart" && !el.matches(".pipVal")) {
         handleInteract(clientPos);
       }
     }
   }
 
-  /**
-   * function to run when the user stops touching
-   * down on the slider element anywhere
-   * @param {event} e the event from browser
-   **/
   function sliderInteractEnd(e) {
     // fire the stop event for touch devices
     if (e.type === "touchend") {
@@ -474,11 +320,6 @@
     handlePressed = false;
   }
 
-  /**
-   * unfocus the slider if the user clicked off of
-   * it, somewhere else on the screen
-   * @param {event} e the event from browser
-   **/
   function bodyInteractStart(e) {
     keyboardActive = false;
     if (focus && e.target !== slider && !slider.contains(e.target)) {
@@ -486,11 +327,6 @@
     }
   }
 
-  /**
-   * send the clientX through to handle the interaction
-   * whenever the user moves acros screen while active
-   * @param {event} e the event from browser
-   **/
   function bodyInteract(e) {
     if ( !disabled ) {
       if (handleActivated) {
@@ -499,29 +335,16 @@
     }
   }
 
-  /**
-   * if user triggers mouseup on the body while
-   * a handle is active (without moving) then we
-   * trigger an interact event there
-   * @param {event} e the event from browser
-   **/
   function bodyMouseUp(e) {
     if ( !disabled ) {
       const el = e.target;
-      // this only works if a handle is active, which can
-      // only happen if there was sliderInteractStart triggered
-      // on the slider, already
       if (handleActivated) {
         if (el === slider || slider.contains(el)) {
           focus = true;
-          // don't trigger interact if the target is a handle (no need) or
-          // if the target is a label (we want to move to that value from rangePips)
           if (!targetIsHandle(el) && !el.matches(".pipVal")) {
             handleInteract(normalisedClient(e));
           }
         }
-        // fire the stop event for mouse device
-        // when the body is triggered with an active handle
         eStop();
       }
     }
@@ -529,11 +352,6 @@
     handlePressed = false;
   }
 
-  /**
-   * if user triggers touchend on the body then we
-   * defocus the slider completely
-   * @param {event} e the event from browser
-   **/
   function bodyTouchEnd(e) {
     handleActivated = false;
     handlePressed = false;
