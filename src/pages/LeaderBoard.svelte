@@ -191,4 +191,21 @@
   th {
     background-color: #f4f4f4;
   }
+
+  @media (max-width: 500px) {
+    .section-leaderboard {
+      width: 410px;
+      overflow: scroll;
+    }
+
+    .slider-wrapper {
+      width: 405px;
+    }
+
+    td {
+      border: 1px solid #ccc;
+      padding: 0.2rem 0.4rem;
+      text-align: left;
+    }
+  }
 </style>
