@@ -32,8 +32,6 @@
     new Date("2025-06-04").getTime(),
   ];
 
-  console.log(new Date("2025-02-26").toLocaleDateString());
-
   // Преобразуем JSON с колонками в массив DataRow
   function reshapeColumnJson(obj: any): DataRow[] {
     const keys = Object.keys(obj);
