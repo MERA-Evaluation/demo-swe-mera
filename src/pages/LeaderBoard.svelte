@@ -80,8 +80,9 @@
 
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
     return data.filter((row) => {
-      const d = new Date(row.date);
-      return d >= start && d <= end;
+      const date = new Date(row.date);
+      console.log(row.date)
+      return date >= start && date <= end;
     });
   }
 
@@ -117,7 +118,6 @@
       bind:values={dateRange}
       range
       float
-      all="label"
       min={new Date("2025-02-26").getTime()}
       max={new Date("2025-06-04").getTime()}
       step={1000 * 60 * 60 * 24}
