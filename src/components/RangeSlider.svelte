@@ -228,7 +228,7 @@
       eChange();
       previousValue = value;
     }
-    return value;
+    return value
   }
 
   function rangeStart(values) {

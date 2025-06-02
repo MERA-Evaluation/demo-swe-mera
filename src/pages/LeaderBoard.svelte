@@ -1,5 +1,4 @@
 <script lang="ts">
-  import modelsData from "./data/sample000.json";
   import RangeSlider from "../components/RangeSlider.svelte";
   import { onMount } from "svelte";
 
@@ -26,6 +25,12 @@
   let allData: DataRow[] = [];
   let loading = true;
 
+  let modelsDataTestArr = [];
+  // подгрузка всех файлов
+  const modelsDataTest = import.meta.glob("./data/*.json");
+
+  modelsDataTestArr = Object.values(modelsDataTest);
+
   // date range: [timestamp, timestamp]
   let dateRange = [
     new Date("2025-02-26").getTime(),
@@ -49,6 +54,7 @@
     return result;
   }
 
+  // основные вычисления по файлам
   function summarize(data: DataRow[]): SummaryRow[] {
     const grouped: Record<string, DataRow[]> = {};
     data.forEach((row) => {
@@ -81,14 +87,17 @@
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
     return data.filter((row) => {
       const date = new Date(row.date);
-      console.log(row.date)
       return date >= start && date <= end;
     });
   }
 
   // Загрузка и первичная агрегация
   onMount(() => {
-    allData = reshapeColumnJson(modelsData);
+    modelsDataTestArr.forEach((module) => {
+      module().then((result) => {
+        allData = [...reshapeColumnJson(result.default)];
+      });
+    });
     const filteredData = filterByDate(
       allData,
       new Date(dateRange[0]),
