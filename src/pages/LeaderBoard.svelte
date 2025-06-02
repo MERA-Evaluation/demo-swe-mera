@@ -1,21 +1,21 @@
 <script lang="ts">
-  import modelsData from './data/sample000.json';
-  import RangeSlider from '../components/RangeSlider.svelte';
-  import { onMount } from 'svelte';
+  import modelsData from "./data/sample000.json";
+  import RangeSlider from "../components/RangeSlider.svelte";
+  import { onMount } from "svelte";
 
   interface DataRow {
     model: string;
     date: string;
-    'pass@1': number;
-    'pass@5': number;
+    "pass@1": number;
+    "pass@5": number;
     task_id?: string;
   }
 
   interface SummaryRow {
     model: string;
-    'pass@1': number;
+    "pass@1": number;
     pass1_std: number;
-    'pass@5': number;
+    "pass@5": number;
     n_task: number;
     trajectory: string;
   }
@@ -28,9 +28,11 @@
 
   // date range: [timestamp, timestamp]
   let dateRange = [
-    new Date('2025-02-26').getTime(),
-    new Date('2025-06-04').getTime()
+    new Date("2025-02-26").getTime(),
+    new Date("2025-06-04").getTime(),
   ];
+
+  console.log(new Date("2025-02-26").toLocaleDateString());
 
   // Преобразуем JSON с колонками в массив DataRow
   function reshapeColumnJson(obj: any): DataRow[] {
@@ -51,7 +53,7 @@
 
   function summarize(data: DataRow[]): SummaryRow[] {
     const grouped: Record<string, DataRow[]> = {};
-    data.forEach(row => {
+    data.forEach((row) => {
       grouped[row.model] ||= [];
       grouped[row.model].push(row);
     });
@@ -63,23 +65,23 @@
     };
 
     return Object.entries(grouped).map(([model, rows]) => {
-      const pass1 = rows.map(r => r['pass@1']);
-      const pass5 = rows.map(r => r['pass@5']);
+      const pass1 = rows.map((r) => r["pass@1"]);
+      const pass5 = rows.map((r) => r["pass@5"]);
       const n = rows.length;
 
       return {
         model,
-        'pass@1': mean(pass1),
+        "pass@1": mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(n),
-        'pass@5': mean(pass5),
+        "pass@5": mean(pass5),
         n_task: n,
-        trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`
+        trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
     });
   }
 
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
-    return data.filter(row => {
+    return data.filter((row) => {
       const d = new Date(row.date);
       return d >= start && d <= end;
     });
@@ -118,34 +120,34 @@
       range
       float
       all="label"
-      min={new Date('2025-02-26').getTime()}
-      max={new Date('2025-06-04').getTime()}
+      min={new Date("2025-02-26").getTime()}
+      max={new Date("2025-06-04").getTime()}
       step={1000 * 60 * 60 * 24}
     />
   </div>
 
-    <table>
-      <thead>
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>pass@1</th>
+        <th>pass@5</th>
+        <th>Tasks</th>
+        <th>Trajectory</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each filtered as row}
         <tr>
-          <th>Model</th>
-          <th>pass@1</th>
-          <th>pass@5</th>
-          <th>Tasks</th>
-          <th>Trajectory</th>
+          <td>{row.model}</td>
+          <td>{row["pass@1"].toFixed(3)}</td>
+          <td>{row["pass@5"].toFixed(3)}</td>
+          <td>{row.n_task}</td>
+          <td><a href={row.trajectory} target="_blank">link</a></td>
         </tr>
-      </thead>
-      <tbody>
-        {#each filtered as row}
-          <tr>
-            <td>{row.model}</td>
-            <td>{row['pass@1'].toFixed(3)}</td>
-            <td>{row['pass@5'].toFixed(3)}</td>
-            <td>{row.n_task}</td>
-            <td><a href={row.trajectory} target="_blank">link</a></td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+      {/each}
+    </tbody>
+  </table>
 </section>
 
 <style>
@@ -172,7 +174,8 @@
     margin-top: 1rem;
   }
 
-  th, td {
+  th,
+  td {
     border: 1px solid #ccc;
     padding: 0.4rem 0.8rem;
     text-align: left;

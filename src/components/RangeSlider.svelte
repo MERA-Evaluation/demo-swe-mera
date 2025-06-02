@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { spring } from "svelte/motion";
   import { createEventDispatcher } from "svelte";
   import RangePips from "./RangePips.svelte";
@@ -135,6 +135,12 @@
     } else {
       return values;
     }
+  }
+
+  function convertFromGetTimeToLocaleString(time: number) {
+    const timestamp = new Date(time);
+
+    return timestamp.toLocaleDateString();
   }
 
   function getSliderDimensions() {
@@ -596,6 +602,7 @@
   }
 </style>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   {id}
   bind:this={slider}
@@ -632,13 +639,12 @@
       aria-valuetext="{prefix}{handleFormatter(value,index,percentOf(value))}{suffix}"
       aria-orientation={vertical ? 'vertical' : 'horizontal'}
       aria-disabled={disabled}
-      {disabled}
       tabindex="{ disabled ? -1 : 0 }"
     >
       <span class="rangeNub" />
       {#if float}
         <span class="rangeFloat">
-          {#if prefix}<span class="rangeFloat-prefix">{prefix}</span>{/if}{handleFormatter(value,index,percentOf(value))}{#if suffix}<span class="rangeFloat-suffix">{suffix}</span>{/if}
+          {#if prefix}<span class="rangeFloat-prefix">{convertFromGetTimeToLocaleString(prefix)}</span>{/if}{convertFromGetTimeToLocaleString(value)}{#if suffix}<span class="rangeFloat-suffix">{suffix}</span>{/if}
         </span>
       {/if}
     </span>
