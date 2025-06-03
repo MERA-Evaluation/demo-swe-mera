@@ -23,7 +23,6 @@
   let filtered: SummaryRow[] = [];
 
   let allData: DataRow[] = [];
-  let loading = true;
 
   let modelsDataTestArr = [];
   // подгрузка всех файлов
@@ -31,10 +30,13 @@
 
   modelsDataTestArr = Object.values(modelsDataTest);
 
-  // date range: [timestamp, timestamp]
+  const START_DATE = new Date("2025-02-26").getTime();
+  const END_DATE = new Date("2025-06-04").getTime()
+
+  // date range: [timestamp, timestamp], let из-за bind к компоненту
   let dateRange = [
-    new Date("2025-02-26").getTime(),
-    new Date("2025-06-04").getTime(),
+    START_DATE,
+    END_DATE
   ];
 
   // Преобразуем JSON с колонками в массив DataRow
@@ -105,7 +107,6 @@
     );
     summary = summarize(filteredData);
     filtered = [...summary];
-    loading = false;
   });
 
   // Реакция на изменение диапазона
@@ -127,8 +128,8 @@
       bind:values={dateRange}
       range
       float
-      min={new Date("2025-02-26").getTime()}
-      max={new Date("2025-06-04").getTime()}
+      min={START_DATE}
+      max={END_DATE}
       step={1000 * 60 * 60 * 24}
     />
   </div>

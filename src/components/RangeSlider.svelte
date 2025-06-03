@@ -137,10 +137,14 @@
     }
   }
 
-  function convertFromGetTimeToLocaleString(time: number) {
+  function convertFromGetTimeToLocaleString(time: number): string {
     const timestamp = new Date(time);
 
-    return timestamp.toLocaleDateString();
+    return changeDotsToSlashes(timestamp.toLocaleDateString());
+  }
+
+  function changeDotsToSlashes(convertedTime: string): string {
+    return convertedTime.replaceAll('.', '/');
   }
 
   function getSliderDimensions() {
@@ -531,7 +535,7 @@
     transform: translate(-50%, -100%);
     font-size: 1em;
     text-align: center;
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
     white-space: nowrap;
     transition: all 0.2s ease;
