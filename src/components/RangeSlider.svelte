@@ -25,12 +25,11 @@
   export let id = undefined;
   export let prefix = "";
   export let suffix = "";
-  export let formatter = (v,i,p) => v;
+  export let formatter = (v, i, p) => v;
   export let handleFormatter = formatter;
 
   export let precision = 2;
   export let springValues = { stiffness: 0.15, damping: 0.4 };
-
 
   const dispatch = createEventDispatcher();
 
@@ -48,21 +47,24 @@
   let springPositions;
 
   $: {
-
-    if ( !Array.isArray( values ) ) {
+    if (!Array.isArray(values)) {
       values = [(max + min) / 2];
-      console.error( "'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)" );
+      console.error(
+        "'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)"
+      );
     }
 
     values = trimRange(values.map((v) => alignValueToStep(v)));
-    if ( valueLength !== values.length ) {
-      springPositions = spring(values.map((v) => percentOf(v)), springValues );
+    if (valueLength !== values.length) {
+      springPositions = spring(
+        values.map((v) => percentOf(v)),
+        springValues
+      );
     } else {
       springPositions.set(values.map((v) => percentOf(v)));
     }
     valueLength = values.length;
-  };
-
+  }
 
   $: percentOf = function (val) {
     let perc = ((val - min) / (max - min)) * 100;
@@ -75,11 +77,9 @@
     }
   };
 
-
   $: clampValue = function (val) {
     return val <= min ? min : val >= max ? max : val;
   };
-
 
   $: alignValueToStep = function (val) {
     if (val <= min) {
@@ -95,13 +95,23 @@
     }
     aligned = clampValue(aligned);
 
-
     return parseFloat(aligned.toFixed(precision));
   };
 
-
-  $: orientationStart = vertical ? reversed ? 'top' : 'bottom' : reversed ? 'right' : 'left';
-  $: orientationEnd = vertical ? reversed ? 'bottom' : 'top' : reversed ? 'left' : 'right';
+  $: orientationStart = vertical
+    ? reversed
+      ? "top"
+      : "bottom"
+    : reversed
+      ? "right"
+      : "left";
+  $: orientationEnd = vertical
+    ? reversed
+      ? "bottom"
+      : "top"
+    : reversed
+      ? "left"
+      : "right";
 
   function index(el) {
     if (!el) return -1;
@@ -144,7 +154,7 @@
   }
 
   function changeDotsToSlashes(convertedTime: string): string {
-    return convertedTime.replaceAll('.', '/');
+    return convertedTime.replaceAll(".", "/");
   }
 
   function getSliderDimensions() {
@@ -175,15 +185,15 @@
       } else {
         return 0;
       }
-
     } else {
       closest = values.indexOf(
-        [...values].sort((a, b) => Math.abs(handleVal - a) - Math.abs(handleVal - b))[0]
+        [...values].sort(
+          (a, b) => Math.abs(handleVal - a) - Math.abs(handleVal - b)
+        )[0]
       );
     }
     return closest;
   }
-
 
   function handleInteract(clientPos) {
     const dims = getSliderDimensions();
@@ -205,7 +215,7 @@
 
   function moveHandle(index, value) {
     value = alignValueToStep(value);
-    if ( typeof index === 'undefined' ) {
+    if (typeof index === "undefined") {
       index = activeHandle;
     }
     if (range) {
@@ -232,7 +242,7 @@
       eChange();
       previousValue = value;
     }
-    return value
+    return value;
   }
 
   function rangeStart(values) {
@@ -252,7 +262,7 @@
       return 100 - values[1];
     }
   }
-  
+
   function sliderBlurHandle(e) {
     if (keyboardActive) {
       focus = false;
@@ -262,14 +272,14 @@
   }
 
   function sliderFocusHandle(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       activeHandle = index(e.target);
       focus = true;
     }
   }
 
   function sliderKeydown(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       const handle = index(e.target);
       let jump = e.ctrlKey || e.metaKey || e.shiftKey ? step * 10 : step;
       let prevent = false;
@@ -306,7 +316,7 @@
   }
 
   function sliderInteractStart(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       const el = e.target;
       const clientPos = normalisedClient(e);
       focus = true;
@@ -338,7 +348,7 @@
   }
 
   function bodyInteract(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       if (handleActivated) {
         handleInteract(normalisedClient(e));
       }
@@ -346,7 +356,7 @@
   }
 
   function bodyMouseUp(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       const el = e.target;
       if (handleActivated) {
         if (el === slider || slider.contains(el)) {
@@ -368,7 +378,7 @@
   }
 
   function bodyKeyDown(e) {
-    if ( !disabled ) {
+    if (!disabled) {
       if (e.target === slider || slider.contains(e.target)) {
         keyboardActive = true;
       }
@@ -376,33 +386,141 @@
   }
 
   function eStart() {
-    !disabled && dispatch("start", {
-      activeHandle,
-      value: startValue,
-      values: values.map((v) => alignValueToStep(v)),
-    });
+    !disabled &&
+      dispatch("start", {
+        activeHandle,
+        value: startValue,
+        values: values.map((v) => alignValueToStep(v)),
+      });
   }
 
   function eStop() {
-    !disabled && dispatch("stop", {
-      activeHandle,
-      startValue: startValue,
-      value: values[activeHandle],
-      values: values.map((v) => alignValueToStep(v)),
-    });
+    !disabled &&
+      dispatch("stop", {
+        activeHandle,
+        startValue: startValue,
+        value: values[activeHandle],
+        values: values.map((v) => alignValueToStep(v)),
+      });
   }
 
   function eChange() {
-    !disabled && dispatch("change", {
-      activeHandle,
-      startValue: startValue,
-      previousValue:
-        typeof previousValue === "undefined" ? startValue : previousValue,
-      value: values[activeHandle],
-      values: values.map((v) => alignValueToStep(v)),
-    });
+    !disabled &&
+      dispatch("change", {
+        activeHandle,
+        startValue: startValue,
+        previousValue:
+          typeof previousValue === "undefined" ? startValue : previousValue,
+        value: values[activeHandle],
+        values: values.map((v) => alignValueToStep(v)),
+      });
   }
 </script>
+
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div
+  {id}
+  bind:this={slider}
+  class="rangeSlider"
+  class:range
+  class:disabled
+  class:hoverable
+  class:vertical
+  class:reversed
+  class:focus
+  class:min={range === "min"}
+  class:max={range === "max"}
+  class:pips
+  class:pip-labels={all === "label" ||
+    first === "label" ||
+    last === "label" ||
+    rest === "label"}
+  on:mousedown={sliderInteractStart}
+  on:mouseup={sliderInteractEnd}
+  on:touchstart|preventDefault={sliderInteractStart}
+  on:touchend|preventDefault={sliderInteractEnd}
+>
+  {#each values as value, index}
+    <span
+      role="slider"
+      class="rangeHandle"
+      class:active={focus && activeHandle === index}
+      class:press={handlePressed && activeHandle === index}
+      data-handle={index}
+      on:blur={sliderBlurHandle}
+      on:focus={sliderFocusHandle}
+      on:keydown={sliderKeydown}
+      style="{orientationStart}: {$springPositions[
+        index
+      ]}%; z-index: {activeHandle === index ? 3 : 2};"
+      aria-valuemin={range === true && index === 1 ? values[0] : min}
+      aria-valuemax={range === true && index === 0 ? values[1] : max}
+      aria-valuenow={value}
+      aria-valuetext="{prefix}{handleFormatter(
+        value,
+        index,
+        percentOf(value)
+      )}{suffix}"
+      aria-orientation={vertical ? "vertical" : "horizontal"}
+      aria-disabled={disabled}
+      tabindex={disabled ? -1 : 0}
+    >
+      <span class="rangeNub" />
+      {#if float}
+        <span class="rangeFloat">
+          {#if prefix}<span class="rangeFloat-prefix"
+              >{convertFromGetTimeToLocaleString(prefix)}</span
+            >{/if}{convertFromGetTimeToLocaleString(value)}{#if suffix}<span
+              class="rangeFloat-suffix">{suffix}</span
+            >{/if}
+        </span>
+      {/if}
+    </span>
+  {/each}
+  {#if range}
+    <span
+      class="rangeBar"
+      style="{orientationStart}: {rangeStart($springPositions)}%; 
+             {orientationEnd}: {rangeEnd($springPositions)}%;"
+    />
+  {/if}
+  {#if pips}
+    <RangePips
+      {values}
+      {min}
+      {max}
+      {step}
+      {range}
+      {vertical}
+      {reversed}
+      {orientationStart}
+      {orientationEnd}
+      {hoverable}
+      {disabled}
+      {all}
+      {first}
+      {last}
+      {rest}
+      {pipstep}
+      {prefix}
+      {suffix}
+      {formatter}
+      {focus}
+      {percentOf}
+      {moveHandle}
+    />
+  {/if}
+</div>
+
+<svelte:window
+  on:mousedown={bodyInteractStart}
+  on:touchstart={bodyInteractStart}
+  on:mousemove={bodyInteract}
+  on:touchmove={bodyInteract}
+  on:mouseup={bodyMouseUp}
+  on:touchend={bodyTouchEnd}
+  on:keydown={bodyKeyDown}
+/>
 
 <style>
   :global(.rangeSlider) {
@@ -423,7 +541,7 @@
     height: 0.5em;
     margin: 1em;
     transition: opacity 0.2s ease;
-      user-select: none;
+    user-select: none;
   }
   :global(.rangeSlider *) {
     user-select: none;
@@ -496,7 +614,9 @@
     opacity: 0.2;
   }
   :global(.rangeSlider.hoverable:not(.disabled) .rangeHandle.press:before),
-  :global(.rangeSlider.hoverable:not(.disabled) .rangeHandle.press:hover:before) {
+  :global(
+      .rangeSlider.hoverable:not(.disabled) .rangeHandle.press:hover:before
+    ) {
     box-shadow: 0 0 0 12px var(--handle-border);
     opacity: 0.4;
   }
@@ -521,10 +641,14 @@
   :global(.rangeSlider.range.vertical .rangeHandle:nth-of-type(2) .rangeNub) {
     transform: rotate(-45deg);
   }
-  :global(.rangeSlider.range.vertical.reversed .rangeHandle:nth-of-type(1) .rangeNub) {
+  :global(
+      .rangeSlider.range.vertical.reversed .rangeHandle:nth-of-type(1) .rangeNub
+    ) {
     transform: rotate(-45deg);
   }
-  :global(.rangeSlider.range.vertical.reversed .rangeHandle:nth-of-type(2) .rangeNub) {
+  :global(
+      .rangeSlider.range.vertical.reversed .rangeHandle:nth-of-type(2) .rangeNub
+    ) {
     transform: rotate(135deg);
   }
   :global(.rangeSlider .rangeFloat) {
@@ -597,7 +721,7 @@
     background-color: #4a40d4;
     background-color: var(--float);
   }
-  :global(.rangeSlider.disabled ) {
+  :global(.rangeSlider.disabled) {
     opacity: 0.5;
   }
   :global(.rangeSlider.disabled .rangeNub) {
@@ -605,93 +729,3 @@
     background-color: var(--slider);
   }
 </style>
-
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-  {id}
-  bind:this={slider}
-  class="rangeSlider"
-  class:range
-  class:disabled
-  class:hoverable
-  class:vertical
-  class:reversed
-  class:focus
-  class:min={range === 'min'}
-  class:max={range === 'max'}
-  class:pips
-  class:pip-labels={all === 'label' || first === 'label' || last === 'label' || rest === 'label'}
-  on:mousedown={sliderInteractStart}
-  on:mouseup={sliderInteractEnd}
-  on:touchstart|preventDefault={sliderInteractStart}
-  on:touchend|preventDefault={sliderInteractEnd}
->
-  {#each values as value, index}
-    <span
-      role="slider"
-      class="rangeHandle"
-      class:active={focus && activeHandle === index}
-      class:press={handlePressed && activeHandle === index}
-      data-handle={index}
-      on:blur={sliderBlurHandle}
-      on:focus={sliderFocusHandle}
-      on:keydown={sliderKeydown}
-      style="{orientationStart}: {$springPositions[index]}%; z-index: {activeHandle === index ? 3 : 2};"
-      aria-valuemin={range === true && index === 1 ? values[0] : min}
-      aria-valuemax={range === true && index === 0 ? values[1] : max}
-      aria-valuenow={value}
-      aria-valuetext="{prefix}{handleFormatter(value,index,percentOf(value))}{suffix}"
-      aria-orientation={vertical ? 'vertical' : 'horizontal'}
-      aria-disabled={disabled}
-      tabindex="{ disabled ? -1 : 0 }"
-    >
-      <span class="rangeNub" />
-      {#if float}
-        <span class="rangeFloat">
-          {#if prefix}<span class="rangeFloat-prefix">{convertFromGetTimeToLocaleString(prefix)}</span>{/if}{convertFromGetTimeToLocaleString(value)}{#if suffix}<span class="rangeFloat-suffix">{suffix}</span>{/if}
-        </span>
-      {/if}
-    </span>
-  {/each}
-  {#if range}
-    <span
-      class="rangeBar"
-      style="{orientationStart}: {rangeStart($springPositions)}%; 
-             {orientationEnd}: {rangeEnd($springPositions)}%;" />
-  {/if}
-  {#if pips}
-    <RangePips
-      {values}
-      {min}
-      {max}
-      {step}
-      {range}
-      {vertical}
-      {reversed}
-      {orientationStart}
-      {orientationEnd}
-      {hoverable}
-      {disabled}
-      {all}
-      {first}
-      {last}
-      {rest}
-      {pipstep}
-      {prefix}
-      {suffix}
-      {formatter}
-      {focus}
-      {percentOf}
-      {moveHandle}
-    />
-  {/if}
-</div>
-
-<svelte:window
-  on:mousedown={bodyInteractStart}
-  on:touchstart={bodyInteractStart}
-  on:mousemove={bodyInteract}
-  on:touchmove={bodyInteract}
-  on:mouseup={bodyMouseUp}
-  on:touchend={bodyTouchEnd}
-  on:keydown={bodyKeyDown} />
