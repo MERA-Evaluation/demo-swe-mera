@@ -465,7 +465,7 @@
       aria-disabled={disabled}
       tabindex={disabled ? -1 : 0}
     >
-      <span class="rangeNub" />
+      <span class="rangeNub"></span>
       {#if float}
         <span class="rangeFloat">
           {#if prefix}<span class="rangeFloat-prefix"
@@ -482,7 +482,7 @@
       class="rangeBar"
       style="{orientationStart}: {rangeStart($springPositions)}%; 
              {orientationEnd}: {rangeEnd($springPositions)}%;"
-    />
+    ></span>
   {/if}
   {#if pips}
     <RangePips

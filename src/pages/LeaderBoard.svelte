@@ -94,17 +94,17 @@
   }
 
   // Загрузка и первичная агрегация
-  onMount(() => {
-    modelsDataTestArr.forEach((module) => {
-      module().then((result) => {
-        allData = [...reshapeColumnJson(result.default)];
-      });
-    });
+  onMount(async () => {
+    // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
+    const loadedData = await Promise.all(modelsDataTestArr.map((module) => module()));
+    allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
+
     const filteredData = filterByDate(
       allData,
       new Date(dateRange[0]),
       new Date(dateRange[1])
     );
+    
     summary = summarize(filteredData);
     filtered = [...summary];
   });
@@ -134,6 +134,7 @@
     />
   </div>
 
+  {console.log(filtered)}
   <table>
     <thead>
       <tr>
@@ -146,13 +147,13 @@
     </thead>
     <tbody>
       {#each filtered as row}
-        <tr>
-          <td>{row.model}</td>
-          <td>{row["pass@1"].toFixed(3)}</td>
-          <td>{row["pass@5"].toFixed(3)}</td>
-          <td>{row.n_task}</td>
-          <td><a href={row.trajectory} target="_blank">link</a></td>
-        </tr>
+      <tr>
+        <td>{row.model}</td>
+        <td>{row["pass@1"].toFixed(3)}</td>
+        <td>{row["pass@5"].toFixed(3)}</td>
+        <td>{row.n_task}</td>
+        <td><a href={row.trajectory} target="_blank">link</a></td>
+      </tr>
       {/each}
     </tbody>
   </table>
