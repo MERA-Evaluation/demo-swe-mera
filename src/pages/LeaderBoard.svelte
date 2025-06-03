@@ -31,13 +31,10 @@
   modelsDataTestArr = Object.values(modelsDataTest);
 
   const START_DATE = new Date("2025-02-26").getTime();
-  const END_DATE = new Date("2025-06-04").getTime()
+  const END_DATE = new Date("2025-06-04").getTime();
 
   // date range: [timestamp, timestamp], let из-за bind к компоненту
-  let dateRange = [
-    START_DATE,
-    END_DATE
-  ];
+  let dateRange = [START_DATE, END_DATE];
 
   // Преобразуем JSON с колонками в массив DataRow
   function reshapeColumnJson(obj: any): DataRow[] {
@@ -96,7 +93,9 @@
   // Загрузка и первичная агрегация
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
-    const loadedData = await Promise.all(modelsDataTestArr.map((module) => module()));
+    const loadedData = await Promise.all(
+      modelsDataTestArr.map((module) => module())
+    );
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
 
     const filteredData = filterByDate(
@@ -104,7 +103,7 @@
       new Date(dateRange[0]),
       new Date(dateRange[1])
     );
-    
+
     summary = summarize(filteredData);
     filtered = [...summary];
   });
@@ -135,28 +134,34 @@
   </div>
 
   {console.log(filtered)}
-  <table>
-    <thead>
-      <tr>
-        <th>Model</th>
-        <th>pass@1</th>
-        <th>pass@5</th>
-        <th>Tasks</th>
-        <th>Trajectory</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each filtered as row}
-      <tr>
-        <td>{row.model}</td>
-        <td>{row["pass@1"].toFixed(3)}</td>
-        <td>{row["pass@5"].toFixed(3)}</td>
-        <td>{row.n_task}</td>
-        <td><a href={row.trajectory} target="_blank">link</a></td>
-      </tr>
-      {/each}
-    </tbody>
-  </table>
+  {#if filtered.length}
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>pass@1</th>
+          <th>pass@5</th>
+          <th>Tasks</th>
+          <th>Trajectory</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each filtered as row}
+          <tr>
+            <td>{row.model}</td>
+            <td>{row["pass@1"].toFixed(3)}</td>
+            <td>{row["pass@5"].toFixed(3)}</td>
+            <td>{row.n_task}</td>
+            <td><a href={row.trajectory} target="_blank">link</a></td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {:else}
+    <div class="table__no-data-wrapper">
+      <span>Данных за данный период нет</span>
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -209,5 +214,12 @@
       padding: 0.2rem 0.4rem;
       text-align: left;
     }
+  }
+
+  .table__no-data-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
   }
 </style>
