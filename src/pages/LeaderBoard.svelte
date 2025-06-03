@@ -24,16 +24,18 @@
 
   let allData: DataRow[] = [];
 
-  let modelsDataTestArr = [];
-  // подгрузка всех файлов
-  const modelsDataTest = import.meta.glob("./data/*.json");
+  let modelsDataArr = [];
 
-  modelsDataTestArr = Object.values(modelsDataTest);
+  // подгрузка всех файлов
+  const modelsDataModules = import.meta.glob("./data/*.json");
+
+  modelsDataArr = Object.values(modelsDataModules);
 
   const START_DATE = new Date("2025-02-26").getTime();
   const END_DATE = new Date("2025-06-04").getTime();
+  const DAY_STEP = 1000 * 60 * 60 * 24;
 
-  // date range: [timestamp, timestamp], let из-за bind к компоненту
+  // date range: [timestamp, timestamp], let из-за bind к компоненту, на const прям ругается
   let dateRange = [START_DATE, END_DATE];
 
   // Преобразуем JSON с колонками в массив DataRow
@@ -61,32 +63,41 @@
       grouped[row.model].push(row);
     });
 
-    const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
+    const mean = (arr: number[]) => (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
     const std = (arr: number[]) => {
       const m = mean(arr);
-      return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length);
+      return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length) * 100;
     };
 
     return Object.entries(grouped).map(([model, rows]) => {
       const pass1 = rows.map((r) => r["pass@1"]);
       const pass5 = rows.map((r) => r["pass@5"]);
-      const n = rows.length;
-
+      const tasksLength = rows.length;
       return {
         model,
         "pass@1": mean(pass1),
-        pass1_std: std(pass1) / Math.sqrt(n),
+        pass1_std: std(pass1) / Math.sqrt(tasksLength),
         "pass@5": mean(pass5),
-        n_task: n,
+        n_task: tasksLength,
         trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
     });
   }
 
+  function updateTable() {
+    const filteredData = filterByDate(
+      allData,
+      new Date(dateRange[0]),
+      new Date(dateRange[1])
+    );
+    summary = summarize(filteredData);
+    filtered = [...summary];
+  }
+
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
     return data.filter((row) => {
-      const date = new Date(row.date);
-      return date >= start && date <= end;
+      const date = new Date(row.date).getTime();
+      return date >= start.getTime() && date <= end.getTime();
     });
   }
 
@@ -94,30 +105,16 @@
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
     const loadedData = await Promise.all(
-      modelsDataTestArr.map((module) => module())
+      modelsDataArr.map((module) => module())
     );
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
-
-    const filteredData = filterByDate(
-      allData,
-      new Date(dateRange[0]),
-      new Date(dateRange[1])
-    );
-
-    summary = summarize(filteredData);
-    filtered = [...summary];
   });
 
-  // Реакция на изменение диапазона
+  // Реактивная реакция на изменение диапазона
   $: if (allData.length && dateRange) {
-    const filteredData = filterByDate(
-      allData,
-      new Date(dateRange[0]),
-      new Date(dateRange[1])
-    );
-    summary = summarize(filteredData);
-    filtered = [...summary];
+    updateTable();
   }
+
 </script>
 
 <section class="section-leaderboard">
@@ -129,11 +126,11 @@
       float
       min={START_DATE}
       max={END_DATE}
-      step={1000 * 60 * 60 * 24}
+      step={DAY_STEP}
+      pips
     />
   </div>
 
-  {console.log(filtered)}
   {#if filtered.length}
     <table>
       <thead>
