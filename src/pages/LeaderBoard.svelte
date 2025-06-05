@@ -27,7 +27,7 @@
   let modelsDataArr = [];
 
   // подгрузка всех файлов
-  const modelsDataModules = import.meta.glob("./data/*.json");
+  const modelsDataModules = import.meta.glob("../data/*.json");
 
   modelsDataArr = Object.values(modelsDataModules);
 
