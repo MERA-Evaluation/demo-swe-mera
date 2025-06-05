@@ -22,7 +22,7 @@
   export let last = undefined;
   export let rest = undefined;
 
-  export let id = undefined;
+  export let id: string;
   export let prefix = "";
   export let suffix = "";
   export let formatter = (v, i, p) => v;
@@ -486,6 +486,7 @@
   {/if}
   {#if pips}
     <RangePips
+      {id}
       {values}
       {min}
       {max}

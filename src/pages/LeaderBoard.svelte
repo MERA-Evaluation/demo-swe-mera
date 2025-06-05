@@ -117,12 +117,21 @@
   $: if (allData.length && dateRange) {
     updateTable();
   }
+
+  $: style = `
+    <style>
+      ${allData.map((v) => `#testSlider .rsPip[data-val="${new Date(v.date)}"] { display: block; }`).join('')}
+    </style>  
+  `;
 </script>
+
+{@html style}
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
     <!-- step в один день -->
     <RangeSlider
+      id="testSlider"
       bind:values={dateRange}
       range
       float
