@@ -1,20 +1,20 @@
 <script lang="ts">
-  import RangeSlider from "../components/RangeSlider.svelte";
-  import { onMount } from "svelte";
+  import RangeSlider from '../components/RangeSlider.svelte';
+  import { onMount } from 'svelte';
 
   interface DataRow {
     model: string;
     date: string;
-    "pass@1": number;
-    "pass@5": number;
+    'pass@1': number;
+    'pass@5': number;
     task_id?: string;
   }
 
   interface SummaryRow {
     model: string;
-    "pass@1": number;
+    'pass@1': number;
     pass1_std: number;
-    "pass@5": number;
+    'pass@5': number;
     n_task: number;
     trajectory: string;
   }
@@ -27,12 +27,12 @@
   let modelsDataArr = [];
 
   // подгрузка всех файлов
-  const modelsDataModules = import.meta.glob("../data/*.json");
+  const modelsDataModules = import.meta.glob('../data/*.json');
 
   modelsDataArr = Object.values(modelsDataModules);
 
-  const START_DATE = new Date("2025-02-26").getTime();
-  const END_DATE = new Date("2025-06-04").getTime();
+  const START_DATE = new Date('2025-02-26').getTime();
+  const END_DATE = new Date('2025-06-04').getTime();
   const DAY_STEP = 1000 * 60 * 60 * 24;
 
   // date range: [timestamp, timestamp], let из-за bind к компоненту, на const прям ругается
@@ -63,21 +63,24 @@
       grouped[row.model].push(row);
     });
 
-    const mean = (arr: number[]) => (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
+    const mean = (arr: number[]) =>
+      (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
     const std = (arr: number[]) => {
       const m = mean(arr);
-      return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length) * 100;
+      return (
+        Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length) * 100
+      );
     };
 
     return Object.entries(grouped).map(([model, rows]) => {
-      const pass1 = rows.map((r) => r["pass@1"]);
-      const pass5 = rows.map((r) => r["pass@5"]);
+      const pass1 = rows.map((r) => r['pass@1']);
+      const pass5 = rows.map((r) => r['pass@5']);
       const tasksLength = rows.length;
       return {
         model,
-        "pass@1": mean(pass1),
+        'pass@1': mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
-        "pass@5": mean(pass5),
+        'pass@5': mean(pass5),
         n_task: tasksLength,
         trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
@@ -88,7 +91,7 @@
     const filteredData = filterByDate(
       allData,
       new Date(dateRange[0]),
-      new Date(dateRange[1])
+      new Date(dateRange[1]),
     );
     summary = summarize(filteredData);
     filtered = [...summary];
@@ -105,7 +108,7 @@
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
     const loadedData = await Promise.all(
-      modelsDataArr.map((module) => module())
+      modelsDataArr.map((module) => module()),
     );
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
   });
@@ -114,7 +117,6 @@
   $: if (allData.length && dateRange) {
     updateTable();
   }
-
 </script>
 
 <section class="section-leaderboard">
@@ -137,6 +139,7 @@
         <tr>
           <th>Model</th>
           <th>pass@1</th>
+          <th>pass1_std</th>
           <th>pass@5</th>
           <th>Tasks</th>
           <th>Trajectory</th>
@@ -146,8 +149,9 @@
         {#each filtered as row}
           <tr>
             <td>{row.model}</td>
-            <td>{row["pass@1"].toFixed(3)}</td>
-            <td>{row["pass@5"].toFixed(3)}</td>
+            <td>{row['pass@1'].toFixed(3)}</td>
+            <td>{row['pass1_std'].toFixed(3)}</td>
+            <td>{row['pass@5'].toFixed(3)}</td>
             <td>{row.n_task}</td>
             <td><a href={row.trajectory} target="_blank">link</a></td>
           </tr>
