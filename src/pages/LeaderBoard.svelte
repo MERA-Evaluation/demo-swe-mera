@@ -139,14 +139,21 @@
     START_DATE = getMinimumDate(allData);
     END_DATE = getMaximumDate(allData);
     dateRange = [START_DATE, END_DATE];
-    updateTable();
   });
 
   // Реактивная реакция на изменение диапазона
   $: if (allData.length && dateRange) {
     updateTable();
   }
+
+  // $: style = `
+  //   <style>
+  //     ${allData.map((v) => `#testSlider .rsPip[data-val="${new Date(v.date).getTime()}"] { display: block; }`).join('')}
+  //   </style>  
+  // `;
 </script>
+
+<!-- {@html style} -->
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
@@ -164,10 +171,10 @@
   </div>
 
   {#if filtered.length}
-    {console.log(allData)}
     <table>
       <thead>
         <tr>
+          <th>Position</th>
           <th>Model</th>
           <th>pass@1</th>
           <th>pass1_std</th>
@@ -177,8 +184,9 @@
         </tr>
       </thead>
       <tbody>
-        {#each filtered as row}
+        {#each filtered as row, idx}
           <tr>
+            <td>{idx + 1}</td>
             <td>{row.model}</td>
             <td>{row['pass@1'].toFixed(3)}</td>
             <td>{row['pass1_std'].toFixed(3)}</td>
@@ -191,7 +199,7 @@
     </table>
   {:else}
     <div class="table__no-data-wrapper">
-      <span>Данных за данный период нет</span>
+      <span>Данных за этот период нет</span>
     </div>
   {/if}
 </section>

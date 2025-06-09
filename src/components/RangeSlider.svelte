@@ -486,7 +486,6 @@
   {/if}
   {#if pips}
     <RangePips
-      {id}
       {values}
       {min}
       {max}
