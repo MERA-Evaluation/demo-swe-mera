@@ -24,12 +24,9 @@
 
   let allData: DataRow[] = [];
 
-  let modelsDataArr = [];
 
   // подгрузка всех файлов
   const modelsDataModules = import.meta.glob('../data/*.json');
-
-  modelsDataArr = Object.values(modelsDataModules);
 
   let START_DATE: number;
   let END_DATE: number;
@@ -134,7 +131,7 @@
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
     const loadedData = await Promise.all(
-      modelsDataArr.map((module) => module()),
+      Object.values(modelsDataModules).map(module => module()),
     );
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
     START_DATE = getMinimumDate(allData);
