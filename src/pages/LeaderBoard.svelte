@@ -33,7 +33,8 @@
 
   let START_DATE: number;
   let END_DATE: number;
-  const DAY_STEP = 1000 * 60 * 60 * 24;
+  let uniqueDates = [];
+  const DAY_STEP = 1000 * 60 * 60 * 24; // сделать сет из всех дат, потом отобразить все пипсы так
 
   // date range: [timestamp, timestamp], let из-за bind к компоненту, на const прям ругается
   let dateRange;
@@ -138,7 +139,10 @@
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
     START_DATE = getMinimumDate(allData);
     END_DATE = getMaximumDate(allData);
+
+    uniqueDates = Array.from(new Set(allData.map(data => new Date(data.date).getTime())));
     dateRange = [START_DATE, END_DATE];
+
   });
 
   // Реактивная реакция на изменение диапазона
@@ -146,26 +150,28 @@
     updateTable();
   }
 
-  // $: style = `
-  //   <style>
-  //     ${allData.map((v) => `#testSlider .rsPip[data-val="${new Date(v.date).getTime()}"] { display: block; }`).join('')}
-  //   </style>  
-  // `;
+  $: style = `
+    <style>
+      ${uniqueDates.map((date) => `#testSlider .pipVal[data-val="${date}"] { display: block; }`).join('')}
+    </style>  
+  `;
 </script>
 
-<!-- {@html style} -->
+{@html style}
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
     <!-- step в один день -->
     <RangeSlider
       id="testSlider"
+      uniqueDates={uniqueDates}
       bind:values={dateRange}
       range
       float
       min={START_DATE}
       max={END_DATE}
-      step={DAY_STEP}
+      step={1}
+      all="label"
       pips
     />
   </div>

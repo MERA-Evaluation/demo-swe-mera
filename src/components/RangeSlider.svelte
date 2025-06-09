@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { spring } from "svelte/motion";
-  import { createEventDispatcher } from "svelte";
-  import RangePips from "./RangePips.svelte";
+  import { spring } from 'svelte/motion';
+  import { createEventDispatcher } from 'svelte';
+  import RangePips from './RangePips.svelte';
 
   export let range = false;
   export let pushy = false;
@@ -14,6 +14,7 @@
   export let reversed = false;
   export let hoverable = true;
   export let disabled = false;
+  export let uniqueDates = [];
 
   export let pips = false;
   export let pipstep = undefined;
@@ -23,8 +24,8 @@
   export let rest = undefined;
 
   export let id: string;
-  export let prefix = "";
-  export let suffix = "";
+  export let prefix = '';
+  export let suffix = '';
   export let formatter = (v, i, p) => v;
   export let handleFormatter = formatter;
 
@@ -43,6 +44,7 @@
   let activeHandle = values.length - 1;
   let startValue;
   let previousValue;
+  
 
   let springPositions;
 
@@ -50,7 +52,7 @@
     if (!Array.isArray(values)) {
       values = [(max + min) / 2];
       console.error(
-        "'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)"
+        "'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)",
       );
     }
 
@@ -58,7 +60,7 @@
     if (valueLength !== values.length) {
       springPositions = spring(
         values.map((v) => percentOf(v)),
-        springValues
+        springValues,
       );
     } else {
       springPositions.set(values.map((v) => percentOf(v)));
@@ -100,18 +102,18 @@
 
   $: orientationStart = vertical
     ? reversed
-      ? "top"
-      : "bottom"
+      ? 'top'
+      : 'bottom'
     : reversed
-      ? "right"
-      : "left";
+      ? 'right'
+      : 'left';
   $: orientationEnd = vertical
     ? reversed
-      ? "bottom"
-      : "top"
+      ? 'bottom'
+      : 'top'
     : reversed
-      ? "left"
-      : "right";
+      ? 'left'
+      : 'right';
 
   function index(el) {
     if (!el) return -1;
@@ -123,7 +125,7 @@
   }
 
   function normalisedClient(e) {
-    if (e.type.includes("touch")) {
+    if (e.type.includes('touch')) {
       return e.touches[0];
     } else {
       return e;
@@ -131,14 +133,14 @@
   }
 
   function targetIsHandle(el) {
-    const handles = slider.querySelectorAll(".handle");
+    const handles = slider.querySelectorAll('.handle');
     const isHandle = Array.prototype.includes.call(handles, el);
     const isChild = Array.prototype.some.call(handles, (e) => e.contains(el));
     return isHandle || isChild;
   }
 
   function trimRange(values) {
-    if (range === "min" || range === "max") {
+    if (range === 'min' || range === 'max') {
       return values.slice(0, 1);
     } else if (range) {
       return values.slice(0, 2);
@@ -154,7 +156,7 @@
   }
 
   function changeDotsToSlashes(convertedTime: string): string {
-    return convertedTime.replaceAll(".", "/");
+    return convertedTime.replaceAll('.', '/');
   }
 
   function getSliderDimensions() {
@@ -188,8 +190,8 @@
     } else {
       closest = values.indexOf(
         [...values].sort(
-          (a, b) => Math.abs(handleVal - a) - Math.abs(handleVal - b)
-        )[0]
+          (a, b) => Math.abs(handleVal - a) - Math.abs(handleVal - b),
+        )[0],
       );
     }
     return closest;
@@ -215,7 +217,7 @@
 
   function moveHandle(index, value) {
     value = alignValueToStep(value);
-    if (typeof index === "undefined") {
+    if (typeof index === 'undefined') {
       index = activeHandle;
     }
     if (range) {
@@ -246,7 +248,7 @@
   }
 
   function rangeStart(values) {
-    if (range === "min") {
+    if (range === 'min') {
       return 0;
     } else {
       return values[0];
@@ -254,9 +256,9 @@
   }
 
   function rangeEnd(values) {
-    if (range === "max") {
+    if (range === 'max') {
       return 0;
-    } else if (range === "min") {
+    } else if (range === 'min') {
       return 100 - values[0];
     } else {
       return 100 - values[1];
@@ -285,25 +287,25 @@
       let prevent = false;
 
       switch (e.key) {
-        case "PageDown":
+        case 'PageDown':
           jump *= 10;
-        case "ArrowRight":
-        case "ArrowUp":
+        case 'ArrowRight':
+        case 'ArrowUp':
           moveHandle(handle, values[handle] + jump);
           prevent = true;
           break;
-        case "PageUp":
+        case 'PageUp':
           jump *= 10;
-        case "ArrowLeft":
-        case "ArrowDown":
+        case 'ArrowLeft':
+        case 'ArrowDown':
           moveHandle(handle, values[handle] - jump);
           prevent = true;
           break;
-        case "Home":
+        case 'Home':
           moveHandle(handle, min);
           prevent = true;
           break;
-        case "End":
+        case 'End':
           moveHandle(handle, max);
           prevent = true;
           break;
@@ -326,7 +328,7 @@
 
       startValue = previousValue = alignValueToStep(values[activeHandle]);
       eStart();
-      if (e.type === "touchstart" && !el.matches(".pipVal")) {
+      if (e.type === 'touchstart' && !el.matches('.pipVal')) {
         handleInteract(clientPos);
       }
     }
@@ -334,7 +336,7 @@
 
   function sliderInteractEnd(e) {
     // fire the stop event for touch devices
-    if (e.type === "touchend") {
+    if (e.type === 'touchend') {
       eStop();
     }
     handlePressed = false;
@@ -361,7 +363,7 @@
       if (handleActivated) {
         if (el === slider || slider.contains(el)) {
           focus = true;
-          if (!targetIsHandle(el) && !el.matches(".pipVal")) {
+          if (!targetIsHandle(el) && !el.matches('.pipVal')) {
             handleInteract(normalisedClient(e));
           }
         }
@@ -387,7 +389,7 @@
 
   function eStart() {
     !disabled &&
-      dispatch("start", {
+      dispatch('start', {
         activeHandle,
         value: startValue,
         values: values.map((v) => alignValueToStep(v)),
@@ -396,7 +398,7 @@
 
   function eStop() {
     !disabled &&
-      dispatch("stop", {
+      dispatch('stop', {
         activeHandle,
         startValue: startValue,
         value: values[activeHandle],
@@ -406,11 +408,11 @@
 
   function eChange() {
     !disabled &&
-      dispatch("change", {
+      dispatch('change', {
         activeHandle,
         startValue: startValue,
         previousValue:
-          typeof previousValue === "undefined" ? startValue : previousValue,
+          typeof previousValue === 'undefined' ? startValue : previousValue,
         value: values[activeHandle],
         values: values.map((v) => alignValueToStep(v)),
       });
@@ -428,18 +430,19 @@
   class:vertical
   class:reversed
   class:focus
-  class:min={range === "min"}
-  class:max={range === "max"}
+  class:min={range === 'min'}
+  class:max={range === 'max'}
   class:pips
-  class:pip-labels={all === "label" ||
-    first === "label" ||
-    last === "label" ||
-    rest === "label"}
+  class:pip-labels={all === 'label' ||
+    first === 'label' ||
+    last === 'label' ||
+    rest === 'label'}
   on:mousedown={sliderInteractStart}
   on:mouseup={sliderInteractEnd}
   on:touchstart|preventDefault={sliderInteractStart}
   on:touchend|preventDefault={sliderInteractEnd}
 >
+{console.log(uniqueDates)}
   {#each values as value, index}
     <span
       role="slider"
@@ -459,9 +462,9 @@
       aria-valuetext="{prefix}{handleFormatter(
         value,
         index,
-        percentOf(value)
+        percentOf(value),
       )}{suffix}"
-      aria-orientation={vertical ? "vertical" : "horizontal"}
+      aria-orientation={vertical ? 'vertical' : 'horizontal'}
       aria-disabled={disabled}
       tabindex={disabled ? -1 : 0}
     >
@@ -485,8 +488,9 @@
     ></span>
   {/if}
   {#if pips}
+
     <RangePips
-      {values}
+      values={[0, 200]}
       {min}
       {max}
       {step}
@@ -508,6 +512,7 @@
       {focus}
       {percentOf}
       {moveHandle}
+      {uniqueDates}
     />
   {/if}
 </div>
@@ -599,7 +604,7 @@
     transition: box-shadow 0.2s ease;
   }
   :global(.rangeSlider .rangeHandle:before) {
-    content: "";
+    content: '';
     left: 1px;
     top: 1px;
     bottom: 1px;
