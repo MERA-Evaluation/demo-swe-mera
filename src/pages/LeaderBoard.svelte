@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { asClassComponent } from 'svelte/legacy';
   import RangeSlider from '../components/RangeSlider.svelte';
   import { onMount } from 'svelte';
 
@@ -53,11 +54,11 @@
 
   // основные вычисления по файлам
   function summarize(data: DataRow[]): SummaryRow[] {
-    const grouped: Record<string, DataRow[]> = {};
-    data.forEach((row) => {
-      grouped[row.model] ||= [];
-      grouped[row.model].push(row);
-    });
+    const grouped = data.reduce((acc, row) => {
+      (acc[row.model] ||=[]).push(row);
+      return acc;
+    }, {} as Record<string, DataRow[]>);
+
 
     const mean = (arr: number[]) =>
       (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
