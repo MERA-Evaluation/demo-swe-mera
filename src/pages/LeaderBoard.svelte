@@ -150,27 +150,20 @@
     updateTable();
   }
 
-  $: style = `
-    <style>
-      ${uniqueDates.map((date) => `#testSlider .pipVal[data-val="${date}"] { display: block; }`).join('')}
-    </style>  
-  `;
 </script>
 
-{@html style}
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
     <!-- step в один день -->
     <RangeSlider
       id="testSlider"
-      uniqueDates={uniqueDates}
       bind:values={dateRange}
       range
       float
       min={START_DATE}
       max={END_DATE}
-      step={1}
+      step={4}
       all="label"
       pips
     />
@@ -217,15 +210,16 @@
     padding-top: 20px;
     padding-right: 10px;
     padding-left: 10px;
-    max-width: 960px;
-    width: 960px;
+    max-width: 980px;
+    width: 980px;
     min-height: 800px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
+    margin-top: 20px;
   }
 
   .slider-wrapper {
-    margin: 20px 0;
+    margin: 20px;
   }
 
   table {

@@ -1,5 +1,4 @@
 <script>
-
   // range slider props
   export let range = false;
   export let min = 0;
@@ -10,7 +9,6 @@
   export let reversed = false;
   export let hoverable = true;
   export let disabled = false;
-  export let uniqueDates = [];
 
   // range pips / values props
   export let pipstep = undefined;
@@ -20,9 +18,9 @@
   export let rest = undefined;
 
   // formatting props
-  export let prefix = "";
-  export let suffix = "";
-  export let formatter = (v,i) => v;
+  export let prefix = '';
+  export let suffix = '';
+  export let formatter = (v, i) => v;
 
   // stylistic props
   export let focus = undefined;
@@ -32,22 +30,26 @@
   export let percentOf = undefined;
   export let moveHandle = undefined;
 
-  $: pipStep = pipstep || ((max - min) / step >= ( vertical ? 50 : 100 ) ? (max - min) / ( vertical ? 10 : 20 ) : 1);
+  $: pipStep =
+    pipstep ||
+    ((max - min) / step >= (vertical ? 50 : 100)
+      ? (max - min) / (vertical ? 10 : 20)
+      : 1);
 
   $: pipCount = parseInt((max - min) / (step * pipStep), 10);
 
-  $: pipVal = function(val) {
+  $: pipVal = function (val) {
     return min + val * step * pipStep;
   };
 
-  $: isSelected = function(val) {
-    return values.some(v => v === val);
+  $: isSelected = function (val) {
+    return values.some((v) => v === val);
   };
 
-  $: inRange = function(val) {
-    if (range === "min") {
+  $: inRange = function (val) {
+    if (range === 'min') {
       return values[0] > val;
-    } else if (range === "max") {
+    } else if (range === 'max') {
       return values[0] < val;
     } else if (range) {
       return values[0] < val && values[1] > val;
@@ -55,9 +57,91 @@
   };
 
   function labelClick(val) {
-    moveHandle( undefined, val );
+    moveHandle(undefined, val);
   }
 </script>
+
+<div
+  class="rangePips"
+  class:disabled
+  class:hoverable
+  class:vertical
+  class:reversed
+  class:focus
+>
+  {#if (all && first !== false) || first}
+    <span
+      class="pip first"
+      class:selected={isSelected(min)}
+      class:in-range={inRange(min)}
+      style="{orientationStart}: 0%;"
+      on:click={labelClick(min)}
+      on:touchend|preventDefault={labelClick(min)}
+    >
+      {#if all === 'label' || first === 'label'}
+        <span class="pipVal">
+          {#if prefix}<span class="pipVal-prefix"
+              >{new Date(prefix).toLocaleDateString()}</span
+            >{/if}{new Date(
+            formatter(min, 0, 0),
+          ).toLocaleDateString()}{#if suffix}<span class="pipVal-suffix"
+              >{new Date(suffix).toLocaleDateString()}</span
+            >{/if}
+        </span>
+      {/if}
+    </span>
+  {/if}
+
+  {#if (all && rest !== false) || rest}
+    {#each Array(pipCount + 1) as _, i}
+      {#if pipVal(i) !== min && pipVal(i) !== max}
+        <span
+          class="pip"
+          class:selected={isSelected(pipVal(i))}
+          class:in-range={inRange(pipVal(i))}
+          style="{orientationStart}: {percentOf(pipVal(i))}%;"
+          on:click={labelClick(pipVal(i))}
+          on:touchend|preventDefault={labelClick(pipVal(i))}
+        >
+          {#if all === 'label' || rest === 'label'}
+            <span class="pipVal">
+              {#if prefix}<span class="pipVal-prefix"
+                  >{new Date(prefix).toLocaleDateString()}</span
+                >{/if}{new Date(
+                formatter(pipVal(i), i, percentOf(pipVal(i))),
+              ).toLocaleDateString()}{#if suffix}<span class="pipVal-suffix"
+                  >{new Date(s).toLocaleDateString()}</span
+                >{/if}
+            </span>
+          {/if}
+        </span>
+      {/if}
+    {/each}
+  {/if}
+
+  {#if (all && last !== false) || last}
+    <span
+      class="pip last"
+      class:selected={isSelected(max)}
+      class:in-range={inRange(max)}
+      style="{orientationStart}: 100%;"
+      on:click={labelClick(max)}
+      on:touchend|preventDefault={labelClick(max)}
+    >
+      {#if all === 'label' || last === 'label'}
+        <span class="pipVal">
+          {#if prefix}<span class="pipVal-prefix"
+              >{new Date(prefix).toLocaleDateString()}</span
+            >{/if}{new Date(
+            formatter(max, pipCount, 100),
+          ).toLocaleDateString()}{#if suffix}<span class="pipVal-suffix"
+              >{new Date(suffix).toLocaleDateString()}</span
+            >{/if}
+        </span>
+      {/if}
+    </span>
+  {/if}
+</div>
 
 <style>
   :global(.rangeSlider) {
@@ -114,7 +198,9 @@
     transition: all 0.15s ease;
   }
   :global(.rangePips .pipVal) {
-    transition: all 0.15s ease, font-weight 0s linear;
+    transition:
+      all 0.15s ease,
+      font-weight 0s linear;
   }
   :global(.rangePips .pip) {
     color: lightslategray;
@@ -158,74 +244,10 @@
   :global(.rangePips.hoverable:not(.disabled) .pip:not(.selected):hover) {
     transition: none;
   }
-  :global(.rangePips.hoverable:not(.disabled) .pip:not(.selected):hover .pipVal) {
+  :global(
+      .rangePips.hoverable:not(.disabled) .pip:not(.selected):hover .pipVal
+    ) {
     transition: none;
     font-weight: bold;
   }
 </style>
-
-<div 
-  class="rangePips" 
-  class:disabled
-  class:hoverable 
-  class:vertical 
-  class:reversed 
-  class:focus 
->
-  {#if ( all && first !== false ) || first }
-    <span
-      class="pip first"
-      class:selected={isSelected(min)}
-      class:in-range={inRange(min)}
-      style="{orientationStart}: 0%;"
-      on:click={labelClick(min)}
-      on:touchend|preventDefault={labelClick(min)}
-    >
-      {#if all === 'label' || first === 'label'}
-        <span class="pipVal">
-          {#if prefix}<span class="pipVal-prefix">{uniqueDates[0]}</span>{/if}{formatter(min,0,0)}{#if suffix}<span class="pipVal-suffix">{uniqueDates[0]}</span>{/if}
-        </span>
-      {/if}
-    </span>
-  {/if}
-
-  {#if ( all && rest !== false ) || rest}
-    {#each Array(pipCount + 1) as _, i}
-      {#if pipVal(i) !== min && pipVal(i) !== max}
-        <span
-          class="pip"
-          class:selected={isSelected(pipVal(i))}
-          class:in-range={inRange(pipVal(i))}
-          style="{orientationStart}: {percentOf(pipVal(i))}%;"
-          on:click={labelClick(pipVal(i))}
-          on:touchend|preventDefault={labelClick(pipVal(i))}
-        >
-          {#if all === 'label' || rest === 'label'}
-            <span class="pipVal">
-              {#if prefix}<span class="pipVal-prefix">{uniqueDates[0]}</span>{/if}{new Date(uniqueDates[0]).toLocaleDateString()}{#if suffix}<span class="pipVal-suffix">{uniqueDates[0]}</span>{/if}
-            </span>
-
-          {/if}
-        </span>
-      {/if}
-    {/each}
-  {/if}
-
-  {#if ( all && last !== false ) || last}
-    <span
-      class="pip last"
-      class:selected={isSelected(max)}
-      class:in-range={inRange(max)}
-      style="{orientationStart}: 100%;"
-      on:click={labelClick(max)}
-      on:touchend|preventDefault={labelClick(max)}
-    >
-      {#if all === 'label' || last === 'label'}
-        <span class="pipVal">
-          {#if prefix}<span class="pipVal-prefix">{uniqueDates[0]}</span>{/if}{formatter(max,pipCount,100)}{#if suffix}<span class="pipVal-suffix">{uniqueDates[0]}</span>{/if}
-        </span>
-      {/if}
-    </span>
-  {/if}
-  
-</div>

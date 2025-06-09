@@ -44,7 +44,6 @@
   let activeHandle = values.length - 1;
   let startValue;
   let previousValue;
-  
 
   let springPositions;
 
@@ -442,7 +441,6 @@
   on:touchstart|preventDefault={sliderInteractStart}
   on:touchend|preventDefault={sliderInteractEnd}
 >
-{console.log(uniqueDates)}
   {#each values as value, index}
     <span
       role="slider"
@@ -488,7 +486,6 @@
     ></span>
   {/if}
   {#if pips}
-
     <RangePips
       values={[0, 200]}
       {min}
