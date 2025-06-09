@@ -19,8 +19,8 @@
     trajectory: string;
   }
 
-  let summary: SummaryRow[] = [];
-  let filtered: SummaryRow[] = [];
+  let calculatedByJsonData: SummaryRow[] = [];
+  let filteredByDate: SummaryRow[] = [];
 
   let allData: DataRow[] = [];
 
@@ -30,8 +30,6 @@
 
   let START_DATE: number;
   let END_DATE: number;
-  let uniqueDates = [];
-  const DAY_STEP = 1000 * 60 * 60 * 24; // сделать сет из всех дат, потом отобразить все пипсы так
 
   // date range: [timestamp, timestamp], let из-за bind к компоненту, на const прям ругается
   let dateRange;
@@ -91,8 +89,8 @@
       new Date(dateRange[0]),
       new Date(dateRange[1]),
     );
-    summary = summarize(filteredData);
-    filtered = [...summary];
+    calculatedByJsonData = summarize(filteredData);
+    filteredByDate = [...calculatedByJsonData];
   }
 
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
@@ -133,13 +131,12 @@
     const loadedData = await Promise.all(
       Object.values(modelsDataModules).map(module => module()),
     );
+
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
+
     START_DATE = getMinimumDate(allData);
     END_DATE = getMaximumDate(allData);
-
-    uniqueDates = Array.from(new Set(allData.map(data => new Date(data.date).getTime())));
     dateRange = [START_DATE, END_DATE];
-
   });
 
   // Реактивная реакция на изменение диапазона
@@ -152,7 +149,7 @@
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
-    <!-- step в один день -->
+    <!-- step — 4 части, данные берутся из JSON -->
     <RangeSlider
       id="testSlider"
       bind:values={dateRange}
@@ -166,7 +163,7 @@
     />
   </div>
 
-  {#if filtered.length}
+  {#if filteredByDate.length}
     <table>
       <thead>
         <tr>
@@ -180,7 +177,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each filtered as row, idx}
+        {#each filteredByDate as row, idx}
           <tr>
             <td>{idx + 1}</td>
             <td>{row.model}</td>
@@ -212,7 +209,6 @@
     min-height: 800px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
-    margin-top: 20px;
   }
 
   .slider-wrapper {

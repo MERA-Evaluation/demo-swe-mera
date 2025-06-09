@@ -69,5 +69,6 @@
   .header__navigate {
     display: flex;
     gap: 10px;
+    margin-bottom: 15px;
   }
 </style>
