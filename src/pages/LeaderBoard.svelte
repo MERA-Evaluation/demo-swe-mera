@@ -31,12 +31,12 @@
 
   modelsDataArr = Object.values(modelsDataModules);
 
-  const START_DATE = new Date('2025-02-26').getTime();
-  const END_DATE = new Date('2025-06-04').getTime();
+  let START_DATE: number;
+  let END_DATE: number;
   const DAY_STEP = 1000 * 60 * 60 * 24;
 
   // date range: [timestamp, timestamp], let из-за bind к компоненту, на const прям ругается
-  let dateRange = [START_DATE, END_DATE];
+  let dateRange;
 
   // Преобразуем JSON с колонками в массив DataRow
   function reshapeColumnJson(obj: any): DataRow[] {
@@ -104,6 +104,31 @@
     });
   }
 
+  function getMinimumDate(dataRow: DataRow[]) {
+    let minimumDate = dataRow[0].date;
+    for (let currentDate of dataRow) {
+      if (
+        new Date(minimumDate).getTime() > new Date(currentDate.date).getTime()
+      ) {
+        minimumDate = currentDate.date;
+      }
+    }
+
+    return new Date(minimumDate).getTime();
+  }
+
+  function getMaximumDate(dataRow: DataRow[]) {
+    let maximumDate = dataRow[0].date;
+    for (let currentDate of dataRow) {
+      if (
+        new Date(maximumDate).getTime() < new Date(currentDate.date).getTime()
+      ) {
+        maximumDate = currentDate.date;
+      }
+    }
+    return new Date(maximumDate).getTime();
+  }
+
   // Загрузка и первичная агрегация
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
@@ -111,21 +136,17 @@
       modelsDataArr.map((module) => module()),
     );
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
+    START_DATE = getMinimumDate(allData);
+    END_DATE = getMaximumDate(allData);
+    dateRange = [START_DATE, END_DATE];
+    updateTable();
   });
 
   // Реактивная реакция на изменение диапазона
   $: if (allData.length && dateRange) {
     updateTable();
   }
-
-  $: style = `
-    <style>
-      ${allData.map((v) => `#testSlider .rsPip[data-val="${new Date(v.date)}"] { display: block; }`).join('')}
-    </style>  
-  `;
 </script>
-
-{@html style}
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
@@ -143,6 +164,7 @@
   </div>
 
   {#if filtered.length}
+    {console.log(allData)}
     <table>
       <thead>
         <tr>
