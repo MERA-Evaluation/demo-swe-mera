@@ -25,7 +25,6 @@
 
   let allData: DataRow[] = [];
 
-
   // подгрузка всех файлов
   const modelsDataModules = import.meta.glob('../data/*.json');
 
@@ -39,26 +38,25 @@
   function reshapeColumnJson(obj: any): DataRow[] {
     const keys = Object.keys(obj);
     const length = Object.values(obj[keys[0]]).length;
-    const result: DataRow[] = [];
 
-    for (let i = 0; i < length; i++) {
-      const row: any = {};
-      for (const key of keys) {
+    return Array.from({ length }, (_, i) => {
+      const row: Record<string, any> = {};
+      keys.forEach((key) => {
         row[key] = obj[key][i];
-      }
-      result.push(row as DataRow);
-    }
-
-    return result;
+      });
+      return row as DataRow;
+    });
   }
 
   // основные вычисления по файлам
   function summarize(data: DataRow[]): SummaryRow[] {
-    const grouped = data.reduce((acc, row) => {
-      (acc[row.model] ||=[]).push(row);
-      return acc;
-    }, {} as Record<string, DataRow[]>);
-
+    const grouped = data.reduce(
+      (acc, row) => {
+        (acc[row.model] ||= []).push(row);
+        return acc;
+      },
+      {} as Record<string, DataRow[]>,
+    );
 
     const mean = (arr: number[]) =>
       (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
@@ -130,7 +128,7 @@
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
     const loadedData = await Promise.all(
-      Object.values(modelsDataModules).map(module => module()),
+      Object.values(modelsDataModules).map((module) => module()),
     );
 
     allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
@@ -144,9 +142,7 @@
   $: if (allData.length && dateRange) {
     updateTable();
   }
-
 </script>
-
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
