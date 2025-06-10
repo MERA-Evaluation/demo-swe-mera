@@ -180,7 +180,7 @@
       <tbody>
         {#each filteredByDate as row, idx}
           <tr>
-            <td>{idx + 1}</td>
+            <td class="table__position">{idx + 1}</td>
             <td>{row.model}</td>
             <td>{row['pass@1'].toFixed(3)}</td>
             <td>{row['pass1_std'].toFixed(3)}</td>
@@ -231,6 +231,13 @@
 
   th {
     background-color: #f4f4f4;
+  }
+
+  .table__position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
   }
 
   @media (max-width: 500px) {
