@@ -77,7 +77,6 @@
     --accent-color: CornflowerBlue;
     --gray: #ccc;
   }
-  /* Inner Design Option */
   .s--inner button {
     padding: 0.5em;
     background-color: #fff;
@@ -99,7 +98,6 @@
     outline: var(--accent-color) solid 1px;
   }
 
-  /* Slider Design Option */
 
   .s--slider {
     display: flex;
@@ -139,22 +137,12 @@
     box-shadow: 0 0px 0px 1px var(--accent-color);
   }
 
-  /* Multi Design Option */
-
-  /* Based on suggestions from Sara Soueidan https://www.sarasoueidan.com/blog/toggle-switch-design/
-  and this example from Scott O'hara https://codepen.io/scottohara/pen/zLZwNv */
-
   .s--multi .group-container {
     border: none;
     padding: 0;
     white-space: nowrap;
   }
 
-  /* .s--multi legend {
-  font-size: 2px;
-  opacity: 0;
-  position: absolute;
-  } */
 
   .s--multi label {
     display: inline-block;
@@ -231,9 +219,6 @@
     border-radius: 1.5em;
   }
 
-  /* gravy */
-
-  /* Inner Design Option */
   [role='switch'][aria-checked='true'] :first-child,
   [role='switch'][aria-checked='false'] :last-child {
     border-radius: 0.25em;
@@ -246,7 +231,6 @@
     border-radius: 0.1em;
   }
 
-  /* Slider Design Option */
   .s--slider button {
     border-radius: 1.5em;
   }
