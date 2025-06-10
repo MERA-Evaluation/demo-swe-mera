@@ -4,6 +4,18 @@
     "eng": "Mera-rebench: A Continuously Evolving and Decontaminated Benchmark for Software Engineering LLMs"
   },
 
+  "navButtons": {
+    "home": {
+      "ru": "Домой",
+      "eng": "Home"
+    },
+
+    "leaderboard": {
+      "ru": "Таблица сравнения",
+      "eng": "Leaderboard"
+    }
+  },
+
   "firstParagraph": {
     "headerBlock": {
       "ru": "Оглавление",

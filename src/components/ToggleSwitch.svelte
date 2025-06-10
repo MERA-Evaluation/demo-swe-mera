@@ -1,4 +1,6 @@
 <script>
+  import { setContext } from "svelte";
+
   export let label;
   export let design = 'inner label';
   export let options = [];
@@ -17,6 +19,7 @@
     checked = state === 'true' ? false : true;
 
     value = checked === true ? 'on' : 'off';
+
   }
 
   const slugify = (str = '') =>

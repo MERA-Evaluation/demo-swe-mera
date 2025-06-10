@@ -4,9 +4,13 @@
   import HomeIcon from './assets/homeIcon.svg';
   import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
   import routes from './routes';
+  import ToggleSwitch from './components/ToggleSwitch.svelte';
+  import {setContext} from 'svelte';
+  import { language } from './store/languageStore';
   let page;
   let params;
 
+  setContext('language', language);
   routes.forEach((route) => {
     router(
       route.path,
@@ -37,6 +41,13 @@
       link="/leaderboard"
     />
   </nav>
+  <ToggleSwitch
+    bind:value={$language}
+    design="multi"
+    options={['ru', 'eng']}
+    fontSize={14}
+    label=""
+  />
 </header>
 
 <main class="main-wrapper">
