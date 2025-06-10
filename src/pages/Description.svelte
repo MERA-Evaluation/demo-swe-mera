@@ -15,25 +15,58 @@
 </script>
 
 <section>
-  {#if lang === 'ru'}
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.ru}>
-      {textData.firstParagraph.textBlock.ru}
-    </TextBlock>
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.ru}>
-      {textData.firstParagraph.textBlock.ru}
-    </TextBlock>
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.ru}>
-      {textData.firstParagraph.textBlock.ru}
-    </TextBlock>
-  {:else}
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.eng}>
-      {textData.firstParagraph.textBlock.eng}
-    </TextBlock>
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.eng}>
-      {textData.firstParagraph.textBlock.eng}
-    </TextBlock>
-    <TextBlock headerBlock={textData.firstParagraph.headerBlock.eng}>
-      {textData.firstParagraph.textBlock.eng}
-    </TextBlock>
-  {/if}
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
+  <TextBlock
+    headerBlock={lang === 'ru'
+      ? textData.firstParagraph.headerBlock.ru
+      : textData.firstParagraph.headerBlock.eng}
+  >
+    {lang === 'ru'
+      ? textData.firstParagraph.textBlock.ru
+      : textData.firstParagraph.textBlock.eng}
+  </TextBlock>
 </section>
