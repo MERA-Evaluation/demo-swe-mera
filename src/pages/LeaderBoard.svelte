@@ -125,19 +125,19 @@
   }
 
   function sortBy(value: string) {
-      filteredByDate = filteredByDate.sort(
-        (currentElem: DataRow, nextElem: DataRow) => {
-          if (currentElem[value] > nextElem[value]) {
-            return -1;
-          }
+    filteredByDate = filteredByDate.sort(
+      (currentElem: DataRow, nextElem: DataRow) => {
+        if (currentElem[value] > nextElem[value]) {
+          return -1;
+        }
 
-          if (currentElem[value] < nextElem[value]) {
-            return 1;
-          }
+        if (currentElem[value] < nextElem[value]) {
+          return 1;
+        }
 
-          return 0;
-        },
-      );
+        return 0;
+      },
+    );
   }
 
   // Загрузка и первичная агрегация
@@ -182,10 +182,17 @@
         <tr>
           <th>Position</th>
           <th>Model</th>
-          <th onclick={() => sortBy('pass@1')} class="table__row-sort">pass@1</th>
-          <th onclick={() => sortBy('pass1_std')}>pass1_std</th>
-          <th onclick={() => sortBy('pass@5')}>pass@5</th>
-          <th onclick={() => sortBy('n_task')}>Tasks</th>
+          <th onclick={() => sortBy('pass@1')} class="table__row-sort"
+            >pass@1</th
+          >
+          <th onclick={() => sortBy('pass1_std')} class="table__row-sort"
+            >pass1_std</th
+          >
+          <th onclick={() => sortBy('pass@5')} class="table__row-sort"
+            >pass@5</th
+          >
+          <th onclick={() => sortBy('n_task')} class="table__row-sort">Tasks</th
+          >
           <th>Trajectory</th>
         </tr>
       </thead>
@@ -250,6 +257,12 @@
     justify-content: center;
     align-items: center;
     font-weight: 800;
+  }
+
+  .table__row-sort {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   @media (max-width: 500px) {
