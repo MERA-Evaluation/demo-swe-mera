@@ -125,7 +125,6 @@
   }
 
   function sortBy(value: string) {
-    console.log(filteredByDate);
       filteredByDate = filteredByDate.sort(
         (currentElem: DataRow, nextElem: DataRow) => {
           if (currentElem[value] > nextElem[value]) {
