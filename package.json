@@ -12,9 +12,14 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tsconfig/svelte": "^5.0.4",
+    "@types/page": "^1.11.9",
     "svelte": "^5.28.1",
     "svelte-check": "^4.1.6",
+    "svelte-range-slider-pips": "^4.0.0",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "page": "^1.11.6"
   }
 }
