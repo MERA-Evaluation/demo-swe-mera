@@ -89,6 +89,8 @@
   }
 
   .header__title {
+    width: 980px;
+    height: 300px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
   }
@@ -103,5 +105,12 @@
     position: absolute;
     top: 50px;
     right: 50px;
+  }
+
+  @media (max-width: 500px) {
+    .header__title {
+      width: 420px;
+      height: 180px;
+    }
   }
 </style>
