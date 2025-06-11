@@ -3,6 +3,10 @@
   import { getContext, onDestroy, onMount } from 'svelte';
   import { getTextByLang } from '../utils/getTextByLang';
 
+  let currentSortKey: string | null = null;
+  let sortDirection: 'asc' | 'desc' | null = null;
+  let originalData: SummaryRow[] = [];
+
   const languageStore = getContext('language');
   let lang;
 
@@ -98,9 +102,15 @@
       new Date(dateRange[1]),
     );
     calculatedByJsonData = summarize(filteredData);
-    filteredByDate = [...calculatedByJsonData];
-  }
+    originalData = [...calculatedByJsonData];
 
+    // Применяем сортировку только если она активна
+    if (currentSortKey && sortDirection) {
+      sortBy(currentSortKey, true); // новый флаг, чтобы не переключать порядок
+    } else {
+      filteredByDate = [...originalData];
+    }
+  }
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
     return data.filter((row) => {
       const date = new Date(row.date).getTime();
@@ -133,22 +143,33 @@
     return new Date(maximumDate).getTime();
   }
 
-  function sortBy(value: string) {
-    filteredByDate = filteredByDate.sort(
-      (currentElem: DataRow, nextElem: DataRow) => {
-        if (currentElem[value] > nextElem[value]) {
-          return -1;
+  function sortBy(key: string, preserveDirection = false) {
+    if (!preserveDirection) {
+      if (currentSortKey === key) {
+        if (sortDirection === 'asc') {
+          sortDirection = 'desc';
+        } else if (sortDirection === 'desc') {
+          sortDirection = null;
+          currentSortKey = null;
+          filteredByDate = [...originalData];
+          return;
+        } else {
+          sortDirection = 'asc';
         }
+      } else {
+        currentSortKey = key;
+        sortDirection = 'asc';
+      }
+    }
 
-        if (currentElem[value] < nextElem[value]) {
-          return 1;
-        }
-
-        return 0;
-      },
-    );
+    filteredByDate = [...originalData].sort((a: any, b: any) => {
+      const aVal = a[key];
+      const bVal = b[key];
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
-
   // Загрузка и первичная агрегация
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
@@ -203,7 +224,7 @@
           <th onclick={() => sortBy('n_task')} class="table__row-sort"
             >{getTextByLang('tasks', lang)}</th
           >
-          <th>{getTextByLang("trajectory", lang)}</th>
+          <th>{getTextByLang('trajectory', lang)}</th>
         </tr>
       </thead>
       <tbody>
