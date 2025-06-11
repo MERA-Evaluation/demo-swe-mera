@@ -195,6 +195,7 @@
     transform: translate(25%, -50%);
   }
   :global(.rangePips .pip) {
+    font-size: 12px;
     transition: all 0.15s ease;
   }
   :global(.rangePips .pipVal) {

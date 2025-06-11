@@ -208,7 +208,7 @@
 
   {#if filteredByDate.length}
     <table>
-      <thead>
+      <thead class="table__header">
         <tr>
           <th>{getTextByLang('position', lang)}</th>
           <th>{getTextByLang('model', lang)}</th>
@@ -292,6 +292,7 @@
     min-height: 800px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
+    overflow: scroll;
   }
 
   .slider-wrapper {
@@ -323,6 +324,7 @@
   }
 
   .table__row-sort {
+    white-space: nowrap;
     &:hover {
       cursor: pointer;
     }
@@ -336,6 +338,11 @@
 
     .slider-wrapper {
       width: 405px;
+    }
+
+    .table__header {
+      position: sticky;
+      top: 5px;
     }
 
     td {
