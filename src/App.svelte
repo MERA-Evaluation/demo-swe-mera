@@ -5,12 +5,23 @@
   import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
   import routes from './routes';
   import ToggleSwitch from './components/ToggleSwitch.svelte';
-  import {setContext} from 'svelte';
+  import { getContext, onDestroy, setContext } from 'svelte';
   import { language } from './store/languageStore';
+  import { getTextByLang } from './utils/getTextByLang';
   let page;
   let params;
 
   setContext('language', language);
+
+  const languageStore = getContext('language');
+  let lang;
+
+  const unsubscribe = languageStore.subscribe((value) => {
+    lang = value;
+  });
+
+  onDestroy(unsubscribe);
+
   routes.forEach((route) => {
     router(
       route.path,
@@ -30,13 +41,16 @@
 
 <header class="header">
   <h1 class="header__title">
-    Mera-rebench: A Continuously Evolving and Decontaminated Benchmark for
-    Software Engineering LLMs
+    {getTextByLang('header', lang)}
   </h1>
   <nav class="header__navigate">
-    <NavigateButton buttonText="Home" imgSrc={HomeIcon} link="/" />
     <NavigateButton
-      buttonText="Leaderboard"
+      buttonText={getTextByLang('home', lang)}
+      imgSrc={HomeIcon}
+      link="/"
+    />
+    <NavigateButton
+      buttonText={getTextByLang('leaderboard', lang)}
       imgSrc={LeaderBoardIcon}
       link="/leaderboard"
     />
