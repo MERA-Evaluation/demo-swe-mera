@@ -1,5 +1,4 @@
 <script>
-  import { setContext } from "svelte";
 
   export let label;
   export let design = 'inner label';

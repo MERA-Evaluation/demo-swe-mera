@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { asClassComponent } from 'svelte/legacy';
   import RangeSlider from '../components/RangeSlider.svelte';
   import { onMount } from 'svelte';
 
