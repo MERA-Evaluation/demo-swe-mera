@@ -212,18 +212,50 @@
         <tr>
           <th>{getTextByLang('position', lang)}</th>
           <th>{getTextByLang('model', lang)}</th>
-          <th onclick={() => sortBy('pass@1')} class="table__row-sort"
-            >pass@1</th
-          >
-          <th onclick={() => sortBy('pass1_std')} class="table__row-sort"
-            >pass1_std</th
-          >
-          <th onclick={() => sortBy('pass@5')} class="table__row-sort"
-            >pass@5</th
-          >
-          <th onclick={() => sortBy('n_task')} class="table__row-sort"
-            >{getTextByLang('tasks', lang)}</th
-          >
+          <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
+            pass@1
+            {#if currentSortKey === 'pass@1'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
+            pass1_std
+            {#if currentSortKey === 'pass1_std'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
+            pass@5
+            {#if currentSortKey === 'pass@5'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('n_task')}>
+            {getTextByLang('tasks', lang)}
+            {#if currentSortKey === 'n_task'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
           <th>{getTextByLang('trajectory', lang)}</th>
         </tr>
       </thead>
