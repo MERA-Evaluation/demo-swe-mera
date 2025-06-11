@@ -1,7 +1,6 @@
-<script lang="ts">
+<script>
   import { getContext, onDestroy } from 'svelte';
   import TextBlock from '../components/TextBlock.svelte';
-  import { firstParagraphText } from '../data/textData';
   import textData from '../data/textData.json';
 
   const languageStore = getContext('language');
@@ -12,61 +11,28 @@
   });
 
   onDestroy(unsubscribe);
+
+  // я не хотел прокидывать в параметры еще отдельно langSettings,
+  // но без него не происходят обновления по тексту, если просто передавать lang в ключ
+  function getTextByLanguage(key, langSettings) {
+    return textData[key]?.[langSettings] || '';
+  }
 </script>
 
 <section>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
+  <TextBlock headerBlock={getTextByLanguage('headerBlockFirst', lang)}>
+    {getTextByLanguage('textBlockFirst', lang)}
   </TextBlock>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
+  <TextBlock headerBlock={getTextByLanguage('headerBlockFirst', lang)}>
+    {getTextByLanguage('textBlockFirst', lang)}
   </TextBlock>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
+  <TextBlock headerBlock={getTextByLanguage('headerBlockFirst', lang)}>
+    {getTextByLanguage('textBlockFirst', lang)}
   </TextBlock>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
+  <TextBlock headerBlock={getTextByLanguage('headerBlockFirst', lang)}>
+    {getTextByLanguage('textBlockFirst', lang)}
   </TextBlock>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
-  </TextBlock>
-  <TextBlock
-    headerBlock={lang === 'ru'
-      ? textData.firstParagraph.headerBlock.ru
-      : textData.firstParagraph.headerBlock.eng}
-  >
-    {lang === 'ru'
-      ? textData.firstParagraph.textBlock.ru
-      : textData.firstParagraph.textBlock.eng}
+  <TextBlock headerBlock={getTextByLanguage('headerBlockFirst', lang)}>
+    {getTextByLanguage('textBlockFirst', lang)}
   </TextBlock>
 </section>
