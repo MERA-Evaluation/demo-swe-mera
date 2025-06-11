@@ -1,6 +1,16 @@
 <script lang="ts">
   import RangeSlider from '../components/RangeSlider.svelte';
-  import { onMount } from 'svelte';
+  import { getContext, onDestroy, onMount } from 'svelte';
+  import { getTextByLang } from '../utils/getTextByLang';
+
+  const languageStore = getContext('language');
+  let lang;
+
+  const unsubscribe = languageStore.subscribe((value) => {
+    lang = value;
+  });
+
+  onDestroy(unsubscribe);
 
   interface DataRow {
     model: string;
@@ -179,8 +189,8 @@
     <table>
       <thead>
         <tr>
-          <th>Position</th>
-          <th>Model</th>
+          <th>{getTextByLang('position', lang)}</th>
+          <th>{getTextByLang('model', lang)}</th>
           <th onclick={() => sortBy('pass@1')} class="table__row-sort"
             >pass@1</th
           >
@@ -190,9 +200,10 @@
           <th onclick={() => sortBy('pass@5')} class="table__row-sort"
             >pass@5</th
           >
-          <th onclick={() => sortBy('n_task')} class="table__row-sort">Tasks</th
+          <th onclick={() => sortBy('n_task')} class="table__row-sort"
+            >{getTextByLang('tasks', lang)}</th
           >
-          <th>Trajectory</th>
+          <th>{getTextByLang("trajectory", lang)}</th>
         </tr>
       </thead>
       <tbody>
