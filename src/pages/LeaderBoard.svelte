@@ -292,7 +292,6 @@
     min-height: 800px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
-    overflow: scroll;
   }
 
   .slider-wrapper {
@@ -303,6 +302,12 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+  }
+
+  .table__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   th,
@@ -333,16 +338,12 @@
   @media (max-width: 500px) {
     .section-leaderboard {
       width: 410px;
-      overflow: scroll;
+      overflow-x: auto;
+      overflow-y: visible;
     }
 
     .slider-wrapper {
       width: 405px;
-    }
-
-    .table__header {
-      position: sticky;
-      top: 5px;
     }
 
     td {
