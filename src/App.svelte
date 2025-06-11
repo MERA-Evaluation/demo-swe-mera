@@ -55,6 +55,8 @@
       link="/leaderboard"
     />
   </nav>
+</header>
+<div class="toggle-wrapper">
   <ToggleSwitch
     bind:value={$language}
     design="multi"
@@ -62,14 +64,14 @@
     fontSize={14}
     label=""
   />
-</header>
-
+</div>
 <main class="main-wrapper">
   <svelte:component this={page} {params} />
 </main>
 
 <style>
   .main-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -95,5 +97,11 @@
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
+  }
+
+  .toggle-wrapper {
+    position: absolute;
+    top: 50px;
+    right: 50px;
   }
 </style>
