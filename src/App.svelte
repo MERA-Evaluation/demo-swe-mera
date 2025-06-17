@@ -90,7 +90,8 @@
 
   .header__title {
     width: 980px;
-    height: 300px;
+    height: 200px;
+    margin-bottom: 20px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
   }

@@ -1,7 +1,9 @@
 <script lang="ts">
   import RangeSlider from '../components/RangeSlider.svelte';
+  // import RangeSlider from 'svelte-range-slider-pips';
   import { getContext, onDestroy, onMount } from 'svelte';
   import { getTextByLang } from '../utils/getTextByLang';
+  import { validationJson } from '../utils/validateJson';
 
   let currentSortKey: string | null = null;
   let sortDirection: 'asc' | 'desc' | null = null;
@@ -15,6 +17,8 @@
   });
 
   onDestroy(unsubscribe);
+
+  const step = 1000 * 60 * 60 * 24 * 30;
 
   interface DataRow {
     model: string;
@@ -173,15 +177,21 @@
   // Загрузка и первичная агрегация
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
-    const loadedData = await Promise.all(
-      Object.values(modelsDataModules).map((module) => module()),
-    );
-
-    allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
-
-    START_DATE = getMinimumDate(allData);
-    END_DATE = getMaximumDate(allData);
-    dateRange = [START_DATE, END_DATE];
+    try {
+      const loadedData = await Promise.all(
+        Object.values(modelsDataModules).map((module) => module()),
+      );
+      loadedData.forEach(dataElement => {
+        validationJson(dataElement);
+      })
+      allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
+  
+      START_DATE = getMinimumDate(allData);
+      END_DATE = getMaximumDate(allData);
+      dateRange = [START_DATE, END_DATE];
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   // Реактивная реакция на изменение диапазона
@@ -200,7 +210,7 @@
       float
       min={START_DATE}
       max={END_DATE}
-      step={4}
+      {step}
       all="label"
       pips
     />
@@ -305,7 +315,7 @@
   }
 
   .table__header {
-    position: sticky;
+    position: sticky !important;
     top: 0;
     z-index: 10;
   }
