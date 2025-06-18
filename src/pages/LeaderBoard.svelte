@@ -1,7 +1,24 @@
 <script lang="ts">
-  import { asClassComponent } from 'svelte/legacy';
   import RangeSlider from '../components/RangeSlider.svelte';
-  import { onMount } from 'svelte';
+  // import RangeSlider from 'svelte-range-slider-pips';
+  import { getContext, onDestroy, onMount } from 'svelte';
+  import { getTextByLang } from '../utils/getTextByLang';
+  import { validationJson } from '../utils/validateJson';
+
+  let currentSortKey: string | null = null;
+  let sortDirection: 'asc' | 'desc' | null = null;
+  let originalData: SummaryRow[] = [];
+
+  const languageStore = getContext('language');
+  let lang;
+
+  const unsubscribe = languageStore.subscribe((value) => {
+    lang = value;
+  });
+
+  onDestroy(unsubscribe);
+
+  const step = 1000 * 60 * 60 * 24 * 30;
 
   interface DataRow {
     model: string;
@@ -89,9 +106,15 @@
       new Date(dateRange[1]),
     );
     calculatedByJsonData = summarize(filteredData);
-    filteredByDate = [...calculatedByJsonData];
-  }
+    originalData = [...calculatedByJsonData];
 
+    // Применяем сортировку только если она активна
+    if (currentSortKey && sortDirection) {
+      sortBy(currentSortKey, true); // новый флаг, чтобы не переключать порядок
+    } else {
+      filteredByDate = [...originalData];
+    }
+  }
   function filterByDate(data: DataRow[], start: Date, end: Date): DataRow[] {
     return data.filter((row) => {
       const date = new Date(row.date).getTime();
@@ -124,18 +147,51 @@
     return new Date(maximumDate).getTime();
   }
 
+  function sortBy(key: string, preserveDirection = false) {
+    if (!preserveDirection) {
+      if (currentSortKey === key) {
+        if (sortDirection === 'asc') {
+          sortDirection = 'desc';
+        } else if (sortDirection === 'desc') {
+          sortDirection = null;
+          currentSortKey = null;
+          filteredByDate = [...originalData];
+          return;
+        } else {
+          sortDirection = 'asc';
+        }
+      } else {
+        currentSortKey = key;
+        sortDirection = 'asc';
+      }
+    }
+
+    filteredByDate = [...originalData].sort((a: any, b: any) => {
+      const aVal = a[key];
+      const bVal = b[key];
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
   // Загрузка и первичная агрегация
   onMount(async () => {
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
-    const loadedData = await Promise.all(
-      Object.values(modelsDataModules).map((module) => module()),
-    );
-
-    allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
-
-    START_DATE = getMinimumDate(allData);
-    END_DATE = getMaximumDate(allData);
-    dateRange = [START_DATE, END_DATE];
+    try {
+      const loadedData = await Promise.all(
+        Object.values(modelsDataModules).map((module) => module()),
+      );
+      loadedData.forEach(dataElement => {
+        validationJson(dataElement);
+      })
+      allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
+  
+      START_DATE = getMinimumDate(allData);
+      END_DATE = getMaximumDate(allData);
+      dateRange = [START_DATE, END_DATE];
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   // Реактивная реакция на изменение диапазона
@@ -154,7 +210,7 @@
       float
       min={START_DATE}
       max={END_DATE}
-      step={4}
+      {step}
       all="label"
       pips
     />
@@ -162,15 +218,55 @@
 
   {#if filteredByDate.length}
     <table>
-      <thead>
+      <thead class="table__header">
         <tr>
-          <th>Position</th>
-          <th>Model</th>
-          <th>pass@1</th>
-          <th>pass1_std</th>
-          <th>pass@5</th>
-          <th>Tasks</th>
-          <th>Trajectory</th>
+          <th>{getTextByLang('position', lang)}</th>
+          <th>{getTextByLang('model', lang)}</th>
+          <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
+            pass@1
+            {#if currentSortKey === 'pass@1'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
+            pass1_std
+            {#if currentSortKey === 'pass1_std'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
+            pass@5
+            {#if currentSortKey === 'pass@5'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th class="table__row-sort" on:click={() => sortBy('n_task')}>
+            {getTextByLang('tasks', lang)}
+            {#if currentSortKey === 'n_task'}
+              {#if sortDirection === 'asc'}
+                ↑
+              {/if}
+              {#if sortDirection === 'desc'}
+                ↓
+              {/if}
+            {/if}
+          </th>
+          <th>{getTextByLang('trajectory', lang)}</th>
         </tr>
       </thead>
       <tbody>
@@ -218,6 +314,12 @@
     margin-top: 1rem;
   }
 
+  .table__header {
+    position: sticky !important;
+    top: 0;
+    z-index: 10;
+  }
+
   th,
   td {
     border: 1px solid #ccc;
@@ -236,10 +338,18 @@
     font-weight: 800;
   }
 
+  .table__row-sort {
+    white-space: nowrap;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   @media (max-width: 500px) {
     .section-leaderboard {
       width: 410px;
-      overflow: scroll;
+      overflow-x: auto;
+      overflow-y: visible;
     }
 
     .slider-wrapper {
