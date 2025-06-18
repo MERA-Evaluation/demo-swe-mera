@@ -39,6 +39,18 @@
   router.start();
 </script>
 
+<nav class="main__navigation">
+  <div class="toggle-wrapper">
+    <ToggleSwitch
+      bind:value={$language}
+      design="multi"
+      options={['ru', 'eng']}
+      fontSize={14}
+      label=""
+    />
+  </div>
+</nav>
+
 <header class="header">
   <h1 class="header__title">
     {getTextByLang('header', lang)}
@@ -56,26 +68,27 @@
     />
   </nav>
 </header>
-<div class="toggle-wrapper">
-  <ToggleSwitch
-    bind:value={$language}
-    design="multi"
-    options={['ru', 'eng']}
-    fontSize={14}
-    label=""
-  />
-</div>
 <main class="main-wrapper">
   <svelte:component this={page} {params} />
 </main>
 
 <style>
   .main-wrapper {
-    position: relative;
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-top: 50px;
+  }
+
+  .main__navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    width: 80%;
+    height: 120px;
+    background-color: #9faee9;
+    border-radius: 20px;
   }
 
   .header {
@@ -103,9 +116,7 @@
   }
 
   .toggle-wrapper {
-    position: absolute;
-    top: 50px;
-    right: 50px;
+    justify-self: end;
   }
 
   @media (max-width: 500px) {
