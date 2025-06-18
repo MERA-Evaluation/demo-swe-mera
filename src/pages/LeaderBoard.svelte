@@ -181,11 +181,13 @@
       const loadedData = await Promise.all(
         Object.values(modelsDataModules).map((module) => module()),
       );
-      loadedData.forEach(dataElement => {
+      loadedData.forEach((dataElement) => {
         validationJson(dataElement);
-      })
-      allData = loadedData.flatMap((result) => reshapeColumnJson(result.default));
-  
+      });
+      allData = loadedData.flatMap((result) =>
+        reshapeColumnJson(result.default),
+      );
+
       START_DATE = getMinimumDate(allData);
       END_DATE = getMaximumDate(allData);
       dateRange = [START_DATE, END_DATE];
@@ -271,14 +273,18 @@
       </thead>
       <tbody>
         {#each filteredByDate as row, idx}
-          <tr>
+          <tr class="table__row">
             <td class="table__position">{idx + 1}</td>
-            <td>{row.model}</td>
+            <td class="table__row-cell">{row.model}</td>
             <td>{row['pass@1'].toFixed(3)}</td>
             <td>{row['pass1_std'].toFixed(3)}</td>
             <td>{row['pass@5'].toFixed(3)}</td>
             <td>{row.n_task}</td>
-            <td><a href={row.trajectory} target="_blank">link</a></td>
+            <td
+              ><a class="table__row-link" href={row.trajectory} target="_blank"
+                >link</a
+              ></td
+            >
           </tr>
         {/each}
       </tbody>
@@ -312,6 +318,8 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    font-weight: 700;
+    color: #1e293b;
   }
 
   .table__header {
@@ -322,13 +330,19 @@
 
   th,
   td {
-    border: 1px solid #ccc;
-    padding: 0.4rem 0.8rem;
+    padding: 0.8rem 1.2rem;
     text-align: left;
   }
 
   th {
     background-color: #f4f4f4;
+  }
+
+  .table__row {
+    border-bottom: 1px solid #ccc;
+    &:hover {
+      background-color: #f4f4f4;
+    }
   }
 
   .table__position {
@@ -340,8 +354,30 @@
 
   .table__row-sort {
     white-space: nowrap;
+    transition: all 0.5s ease;
     &:hover {
       cursor: pointer;
+      background: #e5e7eb;
+    }
+  }
+
+  .table__row-link {
+    position: relative;
+    color: #7d8da5;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #7d8da5;
+      transition: width 0.5s ease;
+    }
+
+    &:hover::after {
+      width: 100%;
     }
   }
 
