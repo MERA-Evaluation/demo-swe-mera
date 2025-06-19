@@ -229,7 +229,7 @@
           <th>{getTextByLang('model', lang)}</th>
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
             <div class="cell-wrapper">
-              pass@1
+              %pass@1
               {#if currentSortKey === 'pass@1'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -244,7 +244,7 @@
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
             <div class="cell-wrapper">
-              pass1_std
+              %pass1_std
               {#if currentSortKey === 'pass1_std'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -259,7 +259,7 @@
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
             <div class="cell-wrapper">
-              pass@5
+              %pass@5
               {#if currentSortKey === 'pass@5'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -292,7 +292,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each filteredByDate as row, idx}
+        {#each filteredByDate as row}
           <tr class="table__row">
             <td class="table__position">{row.modelIdx}</td>
             <td class="table__row-cell">{row.model}</td>
