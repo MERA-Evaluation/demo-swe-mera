@@ -89,7 +89,11 @@
     margin: 0 auto;
     width: 100vw;
     height: 80px;
-    background-color: #9faee9;
+    background: linear-gradient(
+      135deg,
+      rgb(102, 126, 234) 0%,
+      rgb(118, 75, 162) 100%
+    );
     border-radius: 0 0 20px 20px;
   }
 
