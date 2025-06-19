@@ -204,7 +204,6 @@
 
 <section class="section-leaderboard">
   <div class="slider-wrapper">
-    <!-- step — 4 части, данные берутся из JSON -->
     <RangeSlider
       id="testSlider"
       bind:values={dateRange}
@@ -227,25 +226,62 @@
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
             <div class="cell-wrapper">
               pass@1
-              ↕
+              {#if currentSortKey === 'pass@1'}
+                {#if sortDirection === 'asc'}
+                  ↑
+                {/if}
+                {#if sortDirection === 'desc'}
+                  ↓
+                {/if}
+              {:else}
+                ↕
+              {/if}
             </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
             <div class="cell-wrapper">
               pass1_std
-              ↕
+              {#if currentSortKey === 'pass1_std'}
+                {#if sortDirection === 'asc'}
+                  ↑
+                {/if}
+                {#if sortDirection === 'desc'}
+                  ↓
+                {/if}
+              {:else}
+                ↕
+              {/if}
             </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
             <div class="cell-wrapper">
               pass@5
-              ↕
+              {#if currentSortKey === 'pass@5'}
+                {#if sortDirection === 'asc'}
+                  ↑
+                {/if}
+                {#if sortDirection === 'desc'}
+                  ↓
+                {/if}
+              {:else}
+                ↕
+              {/if}
             </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('n_task')}>
             <div class="cell-wrapper">
               {getTextByLang('tasks', lang)}
-              ↕
+              {#if currentSortKey === 'n_task'}
+                {#if sortDirection === 'asc'}
+                  ↑
+                {/if}
+                {#if sortDirection === 'desc'}
+                  ↓
+                {/if}
+              {:else}
+                ↕
+              {/if}
+              <!-- ↕ -->
             </div>
           </th>
           <th>{getTextByLang('trajectory', lang)}</th>
@@ -305,7 +341,7 @@
   }
 
   .table__header {
-    position: sticky ;
+    position: sticky;
     top: 0;
   }
 
