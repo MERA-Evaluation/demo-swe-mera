@@ -225,7 +225,7 @@
     <table>
       <thead class="table__header">
         <tr>
-          <th>{getTextByLang('position', lang)}</th>
+          <th class="table__header-position">{getTextByLang('position', lang)}</th>
           <th>{getTextByLang('model', lang)}</th>
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
             <div class="cell-wrapper">
@@ -288,7 +288,7 @@
               <!-- ↕ -->
             </div>
           </th>
-          <th>{getTextByLang('trajectory', lang)}</th>
+          <th class="table__header-link">{getTextByLang('trajectory', lang)}</th>
         </tr>
       </thead>
       <tbody>
@@ -325,8 +325,8 @@
     padding-left: 10px;
     max-width: 980px;
     width: 980px;
-    min-height: 2000px;
-    border: 1px solid #d3d3d3;
+    min-height: 800px;
+    border: 2px solid #d3d3d3;
     border-radius: 10px;
   }
 
@@ -349,6 +349,13 @@
     top: 0;
   }
 
+  .table__header-position {
+    border-radius: 15px 0 0 15px;
+  }
+
+  .table__header-link {
+    border-radius: 0 15px 15px 0;
+  }
   th,
   td {
     padding: 0.8rem 1.2rem;
