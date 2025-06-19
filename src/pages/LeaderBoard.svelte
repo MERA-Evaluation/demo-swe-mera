@@ -225,48 +225,84 @@
           <th>{getTextByLang('position', lang)}</th>
           <th>{getTextByLang('model', lang)}</th>
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
-            pass@1
-            {#if currentSortKey === 'pass@1'}
-              {#if sortDirection === 'asc'}
-                ↑
-              {/if}
-              {#if sortDirection === 'desc'}
-                ↓
-              {/if}
-            {/if}
+            <div class="cell-wrapper">
+              pass@1
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-down"
+                ><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path
+                  d="m3 8 4-4 4 4"
+                ></path><path d="M7 4v16"></path></svg
+              >
+            </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
-            pass1_std
-            {#if currentSortKey === 'pass1_std'}
-              {#if sortDirection === 'asc'}
-                ↑
-              {/if}
-              {#if sortDirection === 'desc'}
-                ↓
-              {/if}
-            {/if}
+            <div class="cell-wrapper">
+              pass1_std
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-down"
+                ><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path
+                  d="m3 8 4-4 4 4"
+                ></path><path d="M7 4v16"></path></svg
+              >
+            </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
-            pass@5
-            {#if currentSortKey === 'pass@5'}
-              {#if sortDirection === 'asc'}
-                ↑
-              {/if}
-              {#if sortDirection === 'desc'}
-                ↓
-              {/if}
-            {/if}
+            <div class="cell-wrapper">
+              pass@5
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-down"
+                ><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path
+                  d="m3 8 4-4 4 4"
+                ></path><path d="M7 4v16"></path></svg
+              >
+            </div>
           </th>
           <th class="table__row-sort" on:click={() => sortBy('n_task')}>
-            {getTextByLang('tasks', lang)}
-            {#if currentSortKey === 'n_task'}
-              {#if sortDirection === 'asc'}
-                ↑
-              {/if}
-              {#if sortDirection === 'desc'}
-                ↓
-              {/if}
-            {/if}
+            <div class="cell-wrapper">
+              {getTextByLang('tasks', lang)}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-down"
+                ><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path
+                  d="m3 8 4-4 4 4"
+                ></path><path d="M7 4v16"></path></svg
+              >
+            </div>
           </th>
           <th>{getTextByLang('trajectory', lang)}</th>
         </tr>
@@ -351,6 +387,11 @@
     justify-content: center;
     align-items: center;
     font-weight: 800;
+  }
+
+  .cell-wrapper {
+    display: flex;
+    align-items: center;
   }
 
   .table__row-sort {
