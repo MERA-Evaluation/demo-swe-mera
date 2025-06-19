@@ -39,7 +39,7 @@
   router.start();
 </script>
 
-<nav class="main__navigation">
+<header class="header">
   <div class="toggle-wrapper">
     <NavigateButton
       buttonText={getTextByLang('home', lang)}
@@ -59,25 +59,13 @@
       label=""
     />
   </div>
-</nav>
+</header>
 
-<header class="header">
-  <h1 class="header__title">
+<div class="intro-text">
+  <h1 class="intro__title">
     {getTextByLang('header', lang)}
   </h1>
-  <nav class="header__navigate">
-    <NavigateButton
-      buttonText={getTextByLang('home', lang)}
-      imgSrc={HomeIcon}
-      link="/"
-    />
-    <NavigateButton
-      buttonText={getTextByLang('leaderboard', lang)}
-      imgSrc={LeaderBoardIcon}
-      link="/leaderboard"
-    />
-  </nav>
-</header>
+</div>
 <main class="main-wrapper">
   <svelte:component this={page} {params} />
 </main>
@@ -91,21 +79,21 @@
     margin-bottom: 50px;
   }
 
-  .main__navigation {
-    position: sticky;
+  .header {
+    position: absolute;
     top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    /* width: 100vw; */
+    width: 100vw;
     height: 80px;
     background-color: #9faee9;
-    opacity: 0.8;
     border-radius: 0 0 20px 20px;
   }
 
-  .header {
+  .intro-text {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,7 +103,7 @@
     text-align: center;
   }
 
-  .header__title {
+  .intro__title {
     width: 980px;
     height: 200px;
     margin-bottom: 20px;

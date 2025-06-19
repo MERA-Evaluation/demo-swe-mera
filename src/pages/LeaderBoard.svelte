@@ -341,7 +341,7 @@
     padding-left: 10px;
     max-width: 980px;
     width: 980px;
-    min-height: 800px;
+    min-height: 2000px;
     border: 1px solid #d3d3d3;
     border-radius: 10px;
   }
@@ -351,18 +351,18 @@
   }
 
   table {
+    display: table;
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     font-weight: 700;
     color: #1e293b;
   }
 
   .table__header {
-    position: sticky !important;
+    position: sticky ;
     top: 0;
-    z-index: 10;
   }
 
   th,
