@@ -12,12 +12,9 @@
   });
 
   onDestroy(unsubscribe);
-
-
-
 </script>
 
-<section>
+<section class="description">
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
     {getTextByLang('textBlockFirst', lang)}
   </TextBlock>
@@ -34,3 +31,10 @@
     {getTextByLang('textBlockFirst', lang)}
   </TextBlock>
 </section>
+
+<style>
+  .description {
+    max-width: 980px;
+    width: 980px;
+  }
+</style>

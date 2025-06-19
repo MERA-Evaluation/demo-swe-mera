@@ -41,8 +41,16 @@
 
 <nav class="main__navigation">
   <div class="toggle-wrapper">
-    <span>кнопка тип</span>
-    <span>кнопка еще тип</span>
+    <NavigateButton
+      buttonText={getTextByLang('home', lang)}
+      imgSrc={HomeIcon}
+      link="/"
+    />
+    <NavigateButton
+      buttonText={getTextByLang('leaderboard', lang)}
+      imgSrc={LeaderBoardIcon}
+      link="/leaderboard"
+    />
     <ToggleSwitch
       bind:value={$language}
       design="multi"
