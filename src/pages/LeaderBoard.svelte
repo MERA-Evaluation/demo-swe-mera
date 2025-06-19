@@ -292,9 +292,9 @@
           <tr class="table__row">
             <td class="table__position">{idx + 1}</td>
             <td class="table__row-cell">{row.model}</td>
-            <td>{row['pass@1'].toFixed(2)}</td>
-            <td>{row['pass1_std'].toFixed(2)}</td>
-            <td>{row['pass@5'].toFixed(2)}</td>
+            <td>{row['pass@1'].toFixed(2)}%</td>
+            <td>{row['pass1_std'].toFixed(2)}%</td>
+            <td>{row['pass@5'].toFixed(2)}%</td>
             <td>{row.n_task}</td>
             <td
               ><a class="table__row-link" href={row.trajectory} target="_blank"
