@@ -318,6 +318,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    margin-bottom: 1rem;
     font-weight: 700;
     color: #1e293b;
   }

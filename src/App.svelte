@@ -41,6 +41,8 @@
 
 <nav class="main__navigation">
   <div class="toggle-wrapper">
+    <span>кнопка тип</span>
+    <span>кнопка еще тип</span>
     <ToggleSwitch
       bind:value={$language}
       design="multi"
@@ -78,6 +80,7 @@
     align-items: center;
     flex-direction: column;
     margin-top: 50px;
+    margin-bottom: 50px;
   }
 
   .main__navigation {
@@ -116,7 +119,9 @@
   }
 
   .toggle-wrapper {
-    justify-self: end;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
   }
 
   @media (max-width: 500px) {
