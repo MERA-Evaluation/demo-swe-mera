@@ -76,7 +76,7 @@
 
 <style>
   :root {
-    --accent-color: CornflowerBlue;
+    --accent-color: rgb(102, 126, 234);
     --gray: #ccc;
   }
   .s--inner button {
