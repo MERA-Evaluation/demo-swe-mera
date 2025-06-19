@@ -29,6 +29,7 @@
   }
 
   interface SummaryRow {
+    modelIdx: number;
     model: string;
     'pass@1': number;
     pass1_std: number;
@@ -67,6 +68,7 @@
 
   // основные вычисления по файлам
   function summarize(data: DataRow[]): SummaryRow[] {
+    let modelIdx = 0;
     const grouped = data.reduce(
       (acc, row) => {
         (acc[row.model] ||= []).push(row);
@@ -85,10 +87,12 @@
     };
 
     return Object.entries(grouped).map(([model, rows]) => {
+      modelIdx += 1;
       const pass1 = rows.map((r) => r['pass@1']);
       const pass5 = rows.map((r) => r['pass@5']);
       const tasksLength = rows.length;
       return {
+        modelIdx,
         model,
         'pass@1': mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
@@ -290,7 +294,7 @@
       <tbody>
         {#each filteredByDate as row, idx}
           <tr class="table__row">
-            <td class="table__position">{idx + 1}</td>
+            <td class="table__position">{row.modelIdx}</td>
             <td class="table__row-cell">{row.model}</td>
             <td>{row['pass@1'].toFixed(2)}%</td>
             <td>{row['pass1_std'].toFixed(2)}%</td>
