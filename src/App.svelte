@@ -92,14 +92,17 @@
   }
 
   .main__navigation {
+    position: sticky;
+    top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px auto;
-    width: 80%;
-    height: 120px;
+    margin: 0 auto;
+    /* width: 100vw; */
+    height: 80px;
     background-color: #9faee9;
-    border-radius: 20px;
+    opacity: 0.8;
+    border-radius: 0 0 20px 20px;
   }
 
   .header {
