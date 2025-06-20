@@ -151,6 +151,19 @@
     return new Date(maximumDate).getTime();
   }
 
+  function getClassByRank(idx: number) {
+    switch (idx) {
+      case 1:
+        return 'rank-badge rank-1';
+      case 2:
+        return 'rank-badge rank-2';
+      case 3:
+        return 'rank-badge rank-3';
+      default:
+        return 'rank-badge rank-other';
+    }
+  }
+
   function sortBy(key: string, preserveDirection = false) {
     if (!preserveDirection) {
       if (currentSortKey === key) {
@@ -225,7 +238,9 @@
     <table>
       <thead class="table__header">
         <tr>
-          <th class="table__header-position">{getTextByLang('position', lang)}</th>
+          <th class="table__header-position"
+            >{getTextByLang('position', lang)}</th
+          >
           <th>{getTextByLang('model', lang)}</th>
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
             <div class="cell-wrapper">
@@ -288,13 +303,17 @@
               <!-- ↕ -->
             </div>
           </th>
-          <th class="table__header-link">{getTextByLang('trajectory', lang)}</th>
+          <th class="table__header-link">{getTextByLang('trajectory', lang)}</th
+          >
         </tr>
       </thead>
       <tbody>
         {#each filteredByDate as row}
           <tr class="table__row">
-            <td class="table__position">{row.modelIdx}</td>
+            <td class="table__position"
+              ><span class={getClassByRank(row.modelIdx)}>{row.modelIdx}</span
+              ></td
+            >
             <td class="table__row-cell">{row.model}</td>
             <td>{row['pass@1'].toFixed(2)}%</td>
             <td>{row['pass1_std'].toFixed(2)}%</td>
@@ -383,6 +402,39 @@
   .cell-wrapper {
     display: flex;
     align-items: center;
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.875rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .rank-1 {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #92400e;
+  }
+
+  .rank-2 {
+    background: linear-gradient(135deg, #d1d5db, #9ca3af);
+    color: #374151;
+  }
+
+  .rank-3 {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #9a3412;
+  }
+
+  .rank-other {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid var(--border);
   }
 
   .table__row-sort {
