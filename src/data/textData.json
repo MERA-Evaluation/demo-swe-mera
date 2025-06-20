@@ -43,6 +43,11 @@
   "trajectory": {
     "ru": "Ссылка",
     "eng": "Trajectory"
+  },
+
+  "notExistedData": {
+    "ru": "Данных за этот период нет",
+    "eng": "No data for this period"
   }
 
 }

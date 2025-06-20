@@ -330,7 +330,7 @@
     </table>
   {:else}
     <div class="table__no-data-wrapper">
-      <span>Данных за этот период нет</span>
+      <span>{getTextByLang('notExistedData', lang)}</span>
     </div>
   {/if}
 </section>
