@@ -266,7 +266,7 @@
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
             <div class="cell-wrapper">
-              %pass1_std
+              pass1_std
               {#if currentSortKey === 'pass1_std'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -323,7 +323,7 @@
             >
             <td class="table__row-cell">{row.model}</td>
             <td>{row['pass@1'].toFixed(2)}%</td>
-            <td>{row['pass1_std'].toFixed(2)}%</td>
+            <td>{row['pass1_std'].toFixed(2)}</td>
             <td>{row['pass@5'].toFixed(2)}%</td>
             <td>{row.n_task}</td>
             <td
