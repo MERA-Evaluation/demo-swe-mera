@@ -68,7 +68,6 @@
 
   // основные вычисления по файлам
   function summarize(data: DataRow[]): SummaryRow[] {
-    let modelIdx = 0;
     const grouped = data.reduce(
       (acc, row) => {
         (acc[row.model] ||= []).push(row);
@@ -86,13 +85,13 @@
       );
     };
 
-    return Object.entries(grouped).map(([model, rows]) => {
-      modelIdx += 1;
+    // Сначала создаем SummaryRow без modelIdx
+    const summary = Object.entries(grouped).map(([model, rows]) => {
       const pass1 = rows.map((r) => r['pass@1']);
       const pass5 = rows.map((r) => r['pass@5']);
       const tasksLength = rows.length;
       return {
-        modelIdx,
+        modelIdx: 0, // временно
         model,
         'pass@1': mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
@@ -101,6 +100,14 @@
         trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
     });
+
+    // Сортируем по pass@1 по убыванию и присваиваем индексы начиная с 1
+    summary.sort((a, b) => b['pass@1'] - a['pass@1']);
+    summary.forEach((row, idx) => {
+      row.modelIdx = idx + 1;
+    });
+
+    return summary;
   }
 
   function updateTable() {
