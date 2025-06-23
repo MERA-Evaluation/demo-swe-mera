@@ -1,5 +1,4 @@
 <script>
-
   export let label;
   export let design = 'inner label';
   export let options = [];
@@ -18,7 +17,6 @@
     checked = state === 'true' ? false : true;
 
     value = checked === true ? 'on' : 'off';
-
   }
 
   const slugify = (str = '') =>
@@ -100,7 +98,6 @@
     outline: var(--accent-color) solid 1px;
   }
 
-
   .s--slider {
     display: flex;
     align-items: center;
@@ -145,7 +142,6 @@
     white-space: nowrap;
   }
 
-
   .s--multi label {
     display: inline-block;
     line-height: 1.6;
@@ -159,10 +155,14 @@
   }
 
   .s--multi label:first-of-type {
+    text-transform: uppercase;
     padding-right: 5em;
+    color: #fff;
   }
 
   .s--multi label:last-child {
+    text-transform: uppercase;
+    color: #fff;
     margin-left: -5em;
     padding-left: 5em;
   }

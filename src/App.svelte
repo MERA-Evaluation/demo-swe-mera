@@ -8,6 +8,7 @@
   import { getContext, onDestroy, setContext } from 'svelte';
   import { language } from './store/languageStore';
   import { getTextByLang } from './utils/getTextByLang';
+  import logoMera from '../public/logo.svg';
   let page;
   let params;
 
@@ -61,7 +62,9 @@
   </div>
 </header>
 
+
 <div class="intro-text">
+  <img src={logoMera} alt="Логотип">
   <h1 class="intro__title">
     {getTextByLang('header', lang)}
   </h1>
@@ -110,7 +113,7 @@
   .intro__title {
     width: 980px;
     height: 120px;
-    margin-bottom: 20px;
+    margin-bottom: 70px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
   }

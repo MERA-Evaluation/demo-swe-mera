@@ -15,13 +15,14 @@
 
 <style>
   .link-wrapper {
-    font-size: clamp(0.6875rem, 0.3272rem + 1.3725vw, 1.5625rem);
+    font-size: clamp(0.6875rem, 0.5074rem + 0.6863vw, 1.125rem);
     display: flex;
     gap: 2px;
     padding: 5px 10px;
+    border: 1px solid #fff;
     border-radius: 10px;
-    background-color: #d3d3d3;
-    color: #000;
+    background-color: none;
+    color: #fff;
     transition: transform 0.5s;
   }
 
