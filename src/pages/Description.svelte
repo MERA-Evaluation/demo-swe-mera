@@ -16,19 +16,29 @@
 
 <section class="description">
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    {getTextByLang('textBlockFirst', lang)}
+    <article class="description__text-wrapper">
+      {getTextByLang('textBlockFirst', lang)}
+    </article>
   </TextBlock>
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    {getTextByLang('textBlockFirst', lang)}
+    <article class="description__text-wrapper">
+      {getTextByLang('textBlockFirst', lang)}
+    </article>
   </TextBlock>
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    {getTextByLang('textBlockFirst', lang)}
+    <article class="description__text-wrapper">
+      {getTextByLang('textBlockFirst', lang)}
+    </article>
   </TextBlock>
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    {getTextByLang('textBlockFirst', lang)}
+    <article class="description__text-wrapper">
+      {getTextByLang('textBlockFirst', lang)}
+    </article>
   </TextBlock>
   <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    {getTextByLang('textBlockFirst', lang)}
+    <article class="description__text-wrapper">
+      {getTextByLang('textBlockFirst', lang)}
+    </article>
   </TextBlock>
 </section>
 
@@ -36,5 +46,18 @@
   .description {
     max-width: 980px;
     width: 980px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .description__text-wrapper {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  @media (max-width: 500px) {
+    .description {
+      width: 420px;
+    }
   }
 </style>

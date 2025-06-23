@@ -109,16 +109,10 @@
 
   .intro__title {
     width: 980px;
-    height: 200px;
+    height: 120px;
     margin-bottom: 20px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
-  }
-
-  .header__navigate {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
   }
 
   .toggle-wrapper {
@@ -128,9 +122,18 @@
   }
 
   @media (max-width: 500px) {
-    .header__title {
-      width: 420px;
+    .intro__title {
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 410px;
       height: 180px;
+    }
+
+    .main-wrapper {
+      width: 410px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      max-height: 500px;
     }
   }
 </style>

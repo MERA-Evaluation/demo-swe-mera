@@ -35,6 +35,8 @@
 *::before,
 *::after {
 	box-sizing: border-box;
+	/* отладка */ 
+	/* border: 1px solid red;  */
 }
 
 /* Links */

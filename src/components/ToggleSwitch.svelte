@@ -177,7 +177,7 @@
   .s--multi label:first-of-type:after {
     content: '';
     height: 1.25em;
-    overflow: hidden;
+    /* overflow: hidden; */
     pointer-events: none;
     position: absolute;
     vertical-align: middle;

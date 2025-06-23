@@ -85,13 +85,12 @@
       );
     };
 
-    // Сначала создаем SummaryRow без modelIdx
     const summary = Object.entries(grouped).map(([model, rows]) => {
       const pass1 = rows.map((r) => r['pass@1']);
       const pass5 = rows.map((r) => r['pass@5']);
       const tasksLength = rows.length;
       return {
-        modelIdx: 0, // временно
+        modelIdx: 0,
         model,
         'pass@1': mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
@@ -371,6 +370,7 @@
   }
 
   .table__header {
+    z-index: 2;
     position: sticky;
     top: 0;
   }
@@ -381,11 +381,18 @@
 
   .table__header-link {
     border-radius: 0 15px 15px 0;
+    opacity: 1;
   }
   th,
   td {
     padding: 0.8rem 1.2rem;
     text-align: left;
+  }
+
+  tr {
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
   }
 
   th {
@@ -456,7 +463,6 @@
   .table__row-link {
     position: relative;
     color: #7d8da5;
-
     &::after {
       content: '';
       position: absolute;
@@ -476,16 +482,14 @@
   @media (max-width: 500px) {
     .section-leaderboard {
       width: 410px;
-      overflow-x: auto;
-      overflow-y: visible;
+      overflow: auto;
     }
 
     .slider-wrapper {
-      width: 405px;
+      width: 800px;
     }
 
     td {
-      border: 1px solid #ccc;
       padding: 0.2rem 0.4rem;
       text-align: left;
     }
