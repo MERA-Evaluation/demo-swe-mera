@@ -46,8 +46,8 @@
   .description {
     max-width: 980px;
     width: 980px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   .description__text-wrapper {
