@@ -8,7 +8,8 @@
   import { getContext, onDestroy, setContext } from 'svelte';
   import { language } from './store/languageStore';
   import { getTextByLang } from './utils/getTextByLang';
-  import logoMera from '../public/logo.svg';
+  import logoMera from '/logo.svg';
+  import headerLogo from '/headerLogo.svg';
   let page;
   let params;
 
@@ -41,6 +42,7 @@
 </script>
 
 <header class="header">
+  <a href="/"><img class="header-logo" src={headerLogo} alt="логотип" /></a>
   <div class="toggle-wrapper">
     <NavigateButton
       buttonText={getTextByLang('home', lang)}
@@ -62,9 +64,8 @@
   </div>
 </header>
 
-
 <div class="intro-text">
-  <img src={logoMera} alt="Логотип">
+  <img class="intro-logo" src={logoMera} alt="Логотип" />
   <h1 class="intro__title">
     {getTextByLang('header', lang)}
   </h1>
@@ -87,7 +88,7 @@
     top: 0;
     left: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin: 0 auto;
     width: 100vw;
@@ -100,6 +101,15 @@
     border-radius: 0 0 20px 20px;
   }
 
+  .header-logo {
+    margin-left: 16px;
+    transition: 0.5s transform ease;
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+
   .intro-text {
     display: flex;
     flex-direction: column;
@@ -110,26 +120,51 @@
     text-align: center;
   }
 
+  .intro-logo {
+    width: 596px;
+    height: 156px;
+  }
+
   .intro__title {
     width: 980px;
     height: 120px;
-    margin-bottom: 70px;
+    margin-bottom: 100px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
   }
 
   .toggle-wrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     width: 80%;
+    gap: 30px;
+    align-items: center;
+    margin-right: 24px;
   }
 
   @media (max-width: 500px) {
+    .header {
+      justify-content: center;
+    }
     .intro__title {
+      margin-bottom: 20px;
       padding-left: 10px;
       padding-right: 10px;
       width: 410px;
       height: 180px;
+    }
+
+    .intro-logo {
+      width: 248px;
+      height: 78px;
+    }
+
+    .header-logo {
+      display: none;
+    }
+
+    .toggle-wrapper {
+      width: 100%;
     }
 
     .main-wrapper {
