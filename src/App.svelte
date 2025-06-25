@@ -1,7 +1,6 @@
 <script>
   import router from 'page';
   import NavigateButton from './components/NavigateButton.svelte';
-  import HomeIcon from './assets/homeIcon.svg';
   import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
   import routes from './routes';
   import ToggleSwitch from './components/ToggleSwitch.svelte';
