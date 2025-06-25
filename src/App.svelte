@@ -44,11 +44,11 @@
 <header class="header">
   <a href="/"><img class="header-logo" src={headerLogo} alt="логотип" /></a>
   <div class="toggle-wrapper">
-    <NavigateButton
+    <!-- <NavigateButton
       buttonText={getTextByLang('home', lang)}
       imgSrc={HomeIcon}
       link="/"
-    />
+    /> -->
     <NavigateButton
       buttonText={getTextByLang('leaderboard', lang)}
       imgSrc={LeaderBoardIcon}
@@ -157,10 +157,6 @@
     .intro-logo {
       width: 248px;
       height: 78px;
-    }
-
-    .header-logo {
-      display: none;
     }
 
     .toggle-wrapper {
