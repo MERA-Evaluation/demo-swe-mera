@@ -20,26 +20,6 @@
       {getTextByLang('textBlockFirst', lang)}
     </article>
   </TextBlock>
-  <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    <article class="description__text-wrapper">
-      {getTextByLang('textBlockFirst', lang)}
-    </article>
-  </TextBlock>
-  <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    <article class="description__text-wrapper">
-      {getTextByLang('textBlockFirst', lang)}
-    </article>
-  </TextBlock>
-  <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    <article class="description__text-wrapper">
-      {getTextByLang('textBlockFirst', lang)}
-    </article>
-  </TextBlock>
-  <TextBlock headerBlock={getTextByLang('headerBlockFirst', lang)}>
-    <article class="description__text-wrapper">
-      {getTextByLang('textBlockFirst', lang)}
-    </article>
-  </TextBlock>
 </section>
 
 <style>
