@@ -250,7 +250,7 @@
           <th>{getTextByLang('model', lang)}</th>
           <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
             <div class="cell-wrapper">
-              %pass@1
+              pass@1
               {#if currentSortKey === 'pass@1'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -280,7 +280,7 @@
           </th>
           <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
             <div class="cell-wrapper">
-              %pass@5
+              pass@5
               {#if currentSortKey === 'pass@5'}
                 {#if sortDirection === 'asc'}
                   ↑
@@ -483,10 +483,12 @@
     .section-leaderboard {
       width: 410px;
       overflow: auto;
+      padding-top: 0;
     }
 
     .slider-wrapper {
       width: 800px;
+      margin-top: 40px;
     }
 
     td {

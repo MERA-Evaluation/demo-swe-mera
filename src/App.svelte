@@ -56,7 +56,7 @@
     <ToggleSwitch
       bind:value={$language}
       design="multi"
-      options={['ru', 'eng']}
+      options={['eng', 'ru']}
       fontSize={14}
       label=""
     />
@@ -125,8 +125,8 @@
   }
 
   .intro__title {
-    width: 980px;
-    height: 120px;
+    width: 780px;
+    height: 40px;
     margin-bottom: 100px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
@@ -150,8 +150,10 @@
       padding-left: 10px;
       padding-right: 10px;
       width: 410px;
-      height: 180px;
+      height: 100px;
     }
+
+
 
     .intro-logo {
       width: 248px;
