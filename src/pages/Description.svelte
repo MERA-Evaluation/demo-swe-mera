@@ -1,7 +1,6 @@
 <script>
   import { getContext, onDestroy } from 'svelte';
   import TextBlock from '../components/TextBlock.svelte';
-  import textData from '../data/textData.json';
   import { getTextByLang } from '../utils/getTextByLang';
 
   const languageStore = getContext('language');
