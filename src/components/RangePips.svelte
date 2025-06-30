@@ -185,8 +185,13 @@
   }
   :global(.rangePips .pipVal) {
     position: absolute;
+    font-size: clamp(0.625rem, 0.5203rem + 0.3941vw, 0.875rem);
     top: 0.4em;
     transform: translate(-50%, 25%);
+
+    &:hover {
+      cursor: pointer;
+    }
   }
   :global(.rangePips.vertical .pipVal) {
     position: absolute;

@@ -1,13 +1,14 @@
 <script>
   import router from 'page';
   import NavigateButton from './components/NavigateButton.svelte';
-  import HomeIcon from './assets/homeIcon.svg';
   import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
   import routes from './routes';
   import ToggleSwitch from './components/ToggleSwitch.svelte';
   import { getContext, onDestroy, setContext } from 'svelte';
   import { language } from './store/languageStore';
   import { getTextByLang } from './utils/getTextByLang';
+  import logoMera from '/logo.svg';
+  import headerLogo from '/headerLogo.svg';
   let page;
   let params;
 
@@ -40,30 +41,33 @@
 </script>
 
 <header class="header">
-  <h1 class="header__title">
-    {getTextByLang('header', lang)}
-  </h1>
-  <nav class="header__navigate">
-    <NavigateButton
+  <a href="/"><img class="header-logo" src={headerLogo} alt="логотип" /></a>
+  <div class="toggle-wrapper">
+    <!-- <NavigateButton
       buttonText={getTextByLang('home', lang)}
       imgSrc={HomeIcon}
       link="/"
-    />
+    /> -->
     <NavigateButton
       buttonText={getTextByLang('leaderboard', lang)}
       imgSrc={LeaderBoardIcon}
       link="/leaderboard"
     />
-  </nav>
+    <ToggleSwitch
+      bind:value={$language}
+      design="multi"
+      options={['eng', 'ru']}
+      fontSize={14}
+      label=""
+    />
+  </div>
 </header>
-<div class="toggle-wrapper">
-  <ToggleSwitch
-    bind:value={$language}
-    design="multi"
-    options={['ru', 'eng']}
-    fontSize={14}
-    label=""
-  />
+
+<div class="intro-text">
+  <img class="intro-logo" src={logoMera} alt="Логотип" />
+  <h1 class="intro__title">
+    {getTextByLang('header', lang)}
+  </h1>
 </div>
 <main class="main-wrapper">
   <svelte:component this={page} {params} />
@@ -71,14 +75,41 @@
 
 <style>
   .main-wrapper {
-    position: relative;
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-top: 50px;
+    margin-bottom: 50px;
   }
 
   .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    width: 100vw;
+    height: 80px;
+    background: linear-gradient(
+      135deg,
+      rgb(102, 126, 234) 0%,
+      rgb(118, 75, 162) 100%
+    );
+    border-radius: 0 0 20px 20px;
+  }
+
+  .header-logo {
+    margin-left: 16px;
+    transition: 0.5s transform ease;
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+
+  .intro-text {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,30 +119,56 @@
     text-align: center;
   }
 
-  .header__title {
-    width: 980px;
-    height: 200px;
-    margin-bottom: 20px;
+  .intro-logo {
+    width: 596px;
+    height: 156px;
+  }
+
+  .intro__title {
+    width: 780px;
+    height: 40px;
+    margin-bottom: 100px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
   }
 
-  .header__navigate {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
   .toggle-wrapper {
-    position: absolute;
-    top: 50px;
-    right: 50px;
+    display: flex;
+    justify-content: end;
+    width: 80%;
+    gap: 30px;
+    align-items: center;
+    margin-right: 24px;
   }
 
   @media (max-width: 500px) {
-    .header__title {
-      width: 420px;
-      height: 180px;
+    .header {
+      justify-content: center;
+    }
+    .intro__title {
+      margin-bottom: 20px;
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 410px;
+      height: 100px;
+    }
+
+
+
+    .intro-logo {
+      width: 248px;
+      height: 78px;
+    }
+
+    .toggle-wrapper {
+      width: 100%;
+    }
+
+    .main-wrapper {
+      width: 410px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      max-height: 500px;
     }
   }
 </style>

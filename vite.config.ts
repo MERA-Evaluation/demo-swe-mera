@@ -1,7 +1,16 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import {viteSingleFile} from 'vite-plugin-singlefile'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
+  plugins: [
+    svelte(),
+    viteSingleFile() // должен быть после svelte()
+  ],
+  base: '/demo-swe-mera/',
+  build: {
+    target: 'esnext',
+    assetsInlineLimit: 100000000, // максимально возможный лимит
+    cssCodeSplit: false,          // отключает разделение CSS
+  }
 })

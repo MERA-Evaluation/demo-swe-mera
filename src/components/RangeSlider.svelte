@@ -577,6 +577,10 @@
     bottom: auto;
     transform: translateY(-50%) translateX(-50%);
     z-index: 2;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
   :global(.rangeSlider.reversed .rangeHandle) {
     transform: translateY(-50%) translateX(50%);
