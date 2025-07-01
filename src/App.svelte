@@ -145,6 +145,11 @@
     .header {
       justify-content: center;
     }
+
+    .header-logo {
+      width: 100px;
+    }
+
     .intro__title {
       margin-bottom: 20px;
       padding-left: 10px;
@@ -152,8 +157,6 @@
       width: 410px;
       height: 100px;
     }
-
-
 
     .intro-logo {
       width: 248px;
@@ -165,7 +168,6 @@
     }
 
     .main-wrapper {
-      width: 410px;
       margin-top: 10px;
       margin-bottom: 20px;
       max-height: 500px;

@@ -126,3 +126,9 @@ legend {
 input[type='file'] {
 	max-width: 100%;
 }
+
+@media (max-width: 500px) {
+	html {
+		width: 100vw;
+	}
+}

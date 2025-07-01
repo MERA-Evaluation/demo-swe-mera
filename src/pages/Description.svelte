@@ -23,20 +23,20 @@
 
 <style>
   .description {
-    max-width: 980px;
-    width: 980px;
+    /* max-width: 980px;
+    width: 980px; */
     padding-left: 4px;
     padding-right: 4px;
   }
 
   .description__text-wrapper {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
-  @media (max-width: 500px) {
+  /* @media (max-width: 500px) {
     .description {
-      width: 420px;
+      width: 3px;
     }
-  }
+  } */
 </style>

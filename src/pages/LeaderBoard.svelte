@@ -18,7 +18,8 @@
 
   onDestroy(unsubscribe);
 
-  const step = 1000 * 60 * 60 * 24 * 30;
+  // шаг в полтора месяц
+  const step = 1000 * 60 * 60 * 24 * 30 * 1.5;
 
   interface DataRow {
     model: string;
@@ -481,7 +482,7 @@
 
   @media (max-width: 500px) {
     .section-leaderboard {
-      width: 410px;
+      width: 380px;
       overflow: auto;
       padding-top: 0;
     }
