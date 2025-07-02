@@ -1,134 +1,89 @@
 /* Reset and base styles  */
 
 :root {
-	--range-slider: hsl(180, 3.9%, 84.9%);
-	--range-handle-inactive: hsl(180, 4.6%, 61.8%);
-	--range-handle: hsl(234, 67.6%, 71%);
-	--range-handle-focus: hsl(244.1, 63.2%, 54.1%);
-	--range-handle-border: hsl(234, 67.6%, 71%);
-	--range-range-inactive: hsl(180, 4.6%, 61.8%);
-	--range-range: hsl(244.1, 63.2%, 54.1%);
-	--range-range-limit: hsl(180, 6.9%, 74.3%);
-	--range-float-inactive: hsl(180, 4.6%, 61.8%);
-	--range-float: hsl(244.1, 63.2%, 54.1%);
-	--range-float-text: hsl(0, 0%, 100%);
+  --range-slider: hsl(180, 3.9%, 84.9%);
+  --range-handle-inactive: hsl(180, 4.6%, 61.8%);
+  --range-handle: hsl(234, 67.6%, 71%);
+  --range-handle-focus: hsl(244.1, 63.2%, 54.1%);
+  --range-handle-border: hsl(234, 67.6%, 71%);
+  --range-range-inactive: hsl(180, 4.6%, 61.8%);
+  --range-range: hsl(244.1, 63.2%, 54.1%);
+  --range-range-limit: hsl(180, 6.9%, 74.3%);
+  --range-float-inactive: hsl(180, 4.6%, 61.8%);
+  --range-float: hsl(244.1, 63.2%, 54.1%);
+  --range-float-text: hsl(0, 0%, 100%);
 
-	--range-pip: hsl(210, 14.3%, 53.3%);
-	--range-pip-text: hsl(210, 14.3%, 53.3%);
-	--range-pip-active: hsl(180, 25.4%, 24.7%);
-	--range-pip-active-text: hsl(180, 25.4%, 24.7%);
-	--range-pip-hover: hsl(180, 25.4%, 24.7%);
-	--range-pip-hover-text: hsl(180, 25.4%, 24.7%);
-	--range-pip-in-range: hsl(27, 82%, 50%);
-	--range-pip-in-range-text: hsl(180, 25.4%, 24.7%);
-	--range-pip-out-of-limit: hsl(210.9, 25.6%, 74.7%);
-	--range-pip-out-of-limit-text: hsl(210.9, 25.6%, 74.7%);
+  --range-pip: hsl(210, 14.3%, 53.3%);
+  --range-pip-text: hsl(210, 14.3%, 53.3%);
+  --range-pip-active: hsl(180, 25.4%, 24.7%);
+  --range-pip-active-text: hsl(180, 25.4%, 24.7%);
+  --range-pip-hover: hsl(180, 25.4%, 24.7%);
+  --range-pip-hover-text: hsl(180, 25.4%, 24.7%);
+  --range-pip-in-range: hsl(27, 82%, 50%);
+  --range-pip-in-range-text: hsl(180, 25.4%, 24.7%);
+  --range-pip-out-of-limit: hsl(210.9, 25.6%, 74.7%);
+  --range-pip-out-of-limit-text: hsl(210.9, 25.6%, 74.7%);
+}
+/* Links */
+
+a,
+a:link,
+a:visited {
+  text-decoration: none;
 }
 
-* {
-	padding: 0px;
-	margin: 0px;
-	border: none;
+a:hover {
+  text-decoration: none;
+}
+
+html {
+  min-inline-size: 375px;
+  max-inline-size: 2560px;
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  font-display: swap;
+  /* border: 1px solid red; */
 }
 
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
-	/* отладка */ 
-	/* border: 1px solid red;  */
+  box-sizing: border-box;
 }
 
-/* Links */
-
-a, a:link, a:visited  {
-    text-decoration: none;
+body {
+  min-inline-size: 375px;
+  max-inline-size: 2560px;
+  display: flex;
+  justify-content: center;
 }
 
-a:hover  {
-    text-decoration: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
 }
 
-html {
-	display: flex;
-	justify-content: center;
-	font-family: "Roboto", sans-serif;
-	font-display: swap;
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* Common */
-
-aside, nav, footer, header, section, main {
-	display: block;
+picture {
+  margin: 0;
+  padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6, p {
-    font-size: inherit;
-	font-weight: inherit;
-}
-
-ul, ul li {
-	list-style: none;
-}
-
-img {
-	vertical-align: top;
-}
-
-img, svg {
-	max-width: 100%;
-	height: auto;
-}
-
-address {
-  font-style: normal;
-}
-
-/* Form */
-
-input, textarea, button, select {
-	font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    background-color: transparent;
-}
-
-input::-ms-clear {
-	display: none;
-}
-
-button, input[type="submit"] {
-    display: inline-block;
-    box-shadow: none;
-    background-color: transparent;
-    background: none;
-    cursor: pointer;
-}
-
-input:focus, input:active,
-button:focus, button:active {
-    outline: none;
-}
-
-button::-moz-focus-inner {
-	padding: 0;
-	border: 0;
-}
-
-label {
-	cursor: pointer;
-}
-
-legend {
-	display: block;
-}
-
-input[type='file'] {
-	max-width: 100%;
-}
-
-@media (max-width: 500px) {
-	html {
-		width: 100vw;
-	}
+button,
+a {
+  color: currentColor;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
