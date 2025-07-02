@@ -19,13 +19,13 @@
   onDestroy(unsubscribe);
 
   // шаг в полтора месяц
-  const step = 1000 * 60 * 60 * 24 * 30 * 1.5;
+  const step = 1000 * 60 * 60 * 24 * 40;
 
   interface DataRow {
     model: string;
     date: string;
     'pass@1': number;
-    'pass@5': number;
+    'pass@6': number;
     task_id?: string;
   }
 
@@ -34,7 +34,7 @@
     model: string;
     'pass@1': number;
     pass1_std: number;
-    'pass@5': number;
+    'pass@6': number;
     n_task: number;
     trajectory: string;
   }
@@ -88,14 +88,14 @@
 
     const summary = Object.entries(grouped).map(([model, rows]) => {
       const pass1 = rows.map((r) => r['pass@1']);
-      const pass5 = rows.map((r) => r['pass@5']);
+      const pass6 = rows.map((r) => r['pass@6']);
       const tasksLength = rows.length;
       return {
         modelIdx: 0,
         model,
         'pass@1': mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
-        'pass@5': mean(pass5),
+        'pass@6': mean(pass6),
         n_task: tasksLength,
         trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
@@ -279,10 +279,10 @@
               {/if}
             </div>
           </th>
-          <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
+          <th class="table__row-sort" on:click={() => sortBy('pass@6')}>
             <div class="cell-wrapper">
-              pass@5
-              {#if currentSortKey === 'pass@5'}
+              pass@6
+              {#if currentSortKey === 'pass@6'}
                 {#if sortDirection === 'asc'}
                   ↑
                 {/if}
@@ -324,7 +324,7 @@
             <td class="table__row-cell">{row.model}</td>
             <td>{row['pass@1'].toFixed(2)}%</td>
             <td>{row['pass1_std'].toFixed(2)}</td>
-            <td>{row['pass@5'].toFixed(2)}%</td>
+            <td>{row['pass@6'].toFixed(2)}%</td>
             <td>{row.n_task}</td>
             <td
               ><a class="table__row-link" href={row.trajectory} target="_blank"
@@ -482,7 +482,7 @@
 
   @media (max-width: 500px) {
     .section-leaderboard {
-      width: 380px;
+      width: 375px;
       overflow: auto;
       padding-top: 0;
     }

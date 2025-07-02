@@ -90,7 +90,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    width: 100vw;
+    width: 100%;
     height: 80px;
     background: linear-gradient(
       135deg,
@@ -144,6 +144,7 @@
   @media (max-width: 500px) {
     .header {
       justify-content: center;
+      width: 100%;
     }
 
     .header-logo {
@@ -154,7 +155,7 @@
       margin-bottom: 20px;
       padding-left: 10px;
       padding-right: 10px;
-      width: 410px;
+      width: 375px;
       height: 100px;
     }
 
