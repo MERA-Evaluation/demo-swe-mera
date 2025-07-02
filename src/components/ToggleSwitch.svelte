@@ -147,6 +147,9 @@
     line-height: 1.6;
     position: relative;
     z-index: 2;
+        &:hover {
+      cursor: pointer;
+    }
   }
 
   .s--multi input {
