@@ -4,11 +4,11 @@ import NotFound from "./pages/NotFound.svelte";
 
  export default [
   {
-    path: '/',
+    path: '/demo-swe-mera/',
     component: Description
   },
   {
-    path: "/leaderboard",
+    path: "/demo-swe-mera/leaderboard",
     component: LeaderBoard
   },
   {
