@@ -527,7 +527,7 @@
 <style>
   :global(.rangeSlider) {
     --slider: var(--range-slider, #d7dada);
-    --handle-inactive: var(--range-handle-inactive, #99a2a2);
+    --handle-inactive: rgb(102, 126, 234);
     --handle: var(--range-handle, #838de7);
     --handle-focus: var(--range-handle-focus, #4a40d4);
     --handle-border: var(--range-handle-border, var(--handle));
@@ -706,7 +706,7 @@
     background-color: var(--range);
   }
   :global(.rangeSlider .rangeNub) {
-    background-color: #99a2a2;
+    background-color: rgb(102, 126, 234);
     background-color: var(--handle-inactive);
   }
   :global(.rangeSlider.focus .rangeNub) {
