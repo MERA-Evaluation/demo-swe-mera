@@ -279,10 +279,10 @@
               {/if}
             </div>
           </th>
-          <th class="table__row-sort" on:click={() => sortBy('pass@5')}>
+          <th class="table__row-sort" on:click={() => sortBy('pass@6')}>
             <div class="cell-wrapper">
               pass@6
-              {#if currentSortKey === 'pass@5'}
+              {#if currentSortKey === 'pass@6'}
                 {#if sortDirection === 'asc'}
                   ↑
                 {/if}
