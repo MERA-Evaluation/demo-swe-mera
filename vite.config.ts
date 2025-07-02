@@ -7,7 +7,7 @@ export default defineConfig({
     svelte(),
     viteSingleFile() // должен быть после svelte()
   ],
-  base: '/demo-swe-mera/',
+  base: '/',
   build: {
     target: 'esnext',
     assetsInlineLimit: 100000000, // максимально возможный лимит
