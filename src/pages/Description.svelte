@@ -29,7 +29,6 @@
     align-items: center;
     max-width: 980px;
     min-width: 375px;
-
     overflow-x: hidden;
   }
 
@@ -38,7 +37,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* padding-left: 30px; */
+    padding-left: 30px;
     padding-right: 30px;
   }
 
