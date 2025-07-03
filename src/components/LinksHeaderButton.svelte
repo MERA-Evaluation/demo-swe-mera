@@ -20,6 +20,7 @@
     gap: 2px;
     padding: 5px 10px;
     border-radius: 10px;
+    border: 1px solid #fff;
     background: linear-gradient(
       135deg,
       rgb(102, 126, 234) 0%,
@@ -35,5 +36,11 @@
 
   .link-wrapper-link {
     max-width: 16px;
+  }
+
+  @media (max-width: 500px) {
+    .link-wrapper {
+      width: 70px;
+    }
   }
 </style>
