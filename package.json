@@ -6,7 +6,7 @@
   "homepage": "https://mera.a-ai.github.io/demo-swe-mera",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "build": "vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
     "deploy": "npx gh-pages -d dist"
