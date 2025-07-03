@@ -131,6 +131,7 @@
     margin-bottom: 100px;
     font-size: clamp(1.75rem, 1.2266rem + 1.9704vw, 3rem);
     font-weight: 800;
+    
   }
 
   .toggle-wrapper {
@@ -172,7 +173,6 @@
     .main-wrapper {
       margin-top: 10px;
       margin-bottom: 20px;
-      max-height: 500px;
     }
   }
 </style>
