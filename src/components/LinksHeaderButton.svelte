@@ -40,7 +40,7 @@
 
   @media (max-width: 500px) {
     .link-wrapper {
-      width: 70px;
+      width: 75px;
     }
   }
 </style>
