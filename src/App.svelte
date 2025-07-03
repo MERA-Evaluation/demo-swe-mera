@@ -41,7 +41,7 @@
     );
   });
 
-  // router.base("/#");
+  router.base("/#");
 
   router.start();
 </script>
