@@ -16,7 +16,7 @@
 <section class="description">
   <TextBlock headerBlock={getTextByLang("headerBlockFirst", lang)}>
     <article class="description__text-wrapper">
-      {getTextByLang("textBlockFirst", lang)}
+      {@html getTextByLang("textBlockFirst", lang)}
     </article>
   </TextBlock>
 </section>
