@@ -41,6 +41,8 @@
     );
   });
 
+  // router.base("/#");
+
   router.start();
 </script>
 

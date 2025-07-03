@@ -14,7 +14,7 @@
   const unsubscribe = languageStore.subscribe((value) => {
     lang = value;
   });
-
+  
   const params = new URLSearchParams(window.location.search);
   let currentPage = params.get("page") || "home";
 
