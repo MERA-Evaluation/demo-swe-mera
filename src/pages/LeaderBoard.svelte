@@ -1,20 +1,24 @@
 <script lang="ts">
-  import RangeSlider from '../components/RangeSlider.svelte';
-  // import RangeSlider from 'svelte-range-slider-pips';
-  import { getContext, onDestroy, onMount } from 'svelte';
-  import { getTextByLang } from '../utils/getTextByLang';
-  import { validationJson } from '../utils/validateJson';
+  import RangeSlider from "../components/RangeSlider.svelte";
+  import { getContext, onDestroy, onMount } from "svelte";
+  import { getTextByLang } from "../utils/getTextByLang";
+  import { validationJson } from "../utils/validateJson";
 
   let currentSortKey: string | null = null;
-  let sortDirection: 'asc' | 'desc' | null = null;
+  let sortDirection: "asc" | "desc" | null = null;
   let originalData: SummaryRow[] = [];
 
-  const languageStore = getContext('language');
+  const languageStore = getContext("language");
   let lang;
 
   const unsubscribe = languageStore.subscribe((value) => {
     lang = value;
   });
+
+  const params = new URLSearchParams(window.location.search);
+  let currentPage = params.get("page") || "home";
+
+  console.log(currentPage);
 
   onDestroy(unsubscribe);
 
@@ -24,17 +28,17 @@
   interface DataRow {
     model: string;
     date: string;
-    'pass@1': number;
-    'pass@6': number;
+    "pass@1": number;
+    "pass@6": number;
     task_id?: string;
   }
 
   interface SummaryRow {
     modelIdx: number;
     model: string;
-    'pass@1': number;
+    "pass@1": number;
     pass1_std: number;
-    'pass@6': number;
+    "pass@6": number;
     n_task: number;
     trajectory: string;
   }
@@ -45,7 +49,7 @@
   let allData: DataRow[] = [];
 
   // подгрузка всех файлов
-  const modelsDataModules = import.meta.glob('../data/*.json');
+  const modelsDataModules = import.meta.glob("../data/*.json");
 
   let START_DATE: number;
   let END_DATE: number;
@@ -74,7 +78,7 @@
         (acc[row.model] ||= []).push(row);
         return acc;
       },
-      {} as Record<string, DataRow[]>,
+      {} as Record<string, DataRow[]>
     );
 
     const mean = (arr: number[]) =>
@@ -87,22 +91,22 @@
     };
 
     const summary = Object.entries(grouped).map(([model, rows]) => {
-      const pass1 = rows.map((r) => r['pass@1']);
-      const pass6 = rows.map((r) => r['pass@6']);
+      const pass1 = rows.map((r) => r["pass@1"]);
+      const pass6 = rows.map((r) => r["pass@6"]);
       const tasksLength = rows.length;
       return {
         modelIdx: 0,
         model,
-        'pass@1': mean(pass1),
+        "pass@1": mean(pass1),
         pass1_std: std(pass1) / Math.sqrt(tasksLength),
-        'pass@6': mean(pass6),
+        "pass@6": mean(pass6),
         n_task: tasksLength,
         trajectory: `https://github.com/mera/swe-mera/trajectory/${model}`,
       };
     });
 
     // Сортируем по pass@1 по убыванию и присваиваем индексы начиная с 1
-    summary.sort((a, b) => b['pass@1'] - a['pass@1']);
+    summary.sort((a, b) => b["pass@1"] - a["pass@1"]);
     summary.forEach((row, idx) => {
       row.modelIdx = idx + 1;
     });
@@ -114,7 +118,7 @@
     const filteredData = filterByDate(
       allData,
       new Date(dateRange[0]),
-      new Date(dateRange[1]),
+      new Date(dateRange[1])
     );
     calculatedByJsonData = summarize(filteredData);
     originalData = [...calculatedByJsonData];
@@ -161,40 +165,40 @@
   function getClassByRank(idx: number) {
     switch (idx) {
       case 1:
-        return 'rank-badge rank-1';
+        return "rank-badge rank-1";
       case 2:
-        return 'rank-badge rank-2';
+        return "rank-badge rank-2";
       case 3:
-        return 'rank-badge rank-3';
+        return "rank-badge rank-3";
       default:
-        return 'rank-badge rank-other';
+        return "rank-badge rank-other";
     }
   }
 
   function sortBy(key: string, preserveDirection = false) {
     if (!preserveDirection) {
       if (currentSortKey === key) {
-        if (sortDirection === 'asc') {
-          sortDirection = 'desc';
-        } else if (sortDirection === 'desc') {
+        if (sortDirection === "asc") {
+          sortDirection = "desc";
+        } else if (sortDirection === "desc") {
           sortDirection = null;
           currentSortKey = null;
           filteredByDate = [...originalData];
           return;
         } else {
-          sortDirection = 'asc';
+          sortDirection = "asc";
         }
       } else {
         currentSortKey = key;
-        sortDirection = 'asc';
+        sortDirection = "asc";
       }
     }
 
     filteredByDate = [...originalData].sort((a: any, b: any) => {
       const aVal = a[key];
       const bVal = b[key];
-      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      if (aVal < bVal) return sortDirection === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
   }
@@ -203,13 +207,13 @@
     // подргужаем все модули, модули у нас являются промисами, выполняем их и получаем JSON-ы
     try {
       const loadedData = await Promise.all(
-        Object.values(modelsDataModules).map((module) => module()),
+        Object.values(modelsDataModules).map((module) => module())
       );
       loadedData.forEach((dataElement) => {
         validationJson(dataElement);
       });
       allData = loadedData.flatMap((result) =>
-        reshapeColumnJson(result.default),
+        reshapeColumnJson(result.default)
       );
 
       START_DATE = getMinimumDate(allData);
@@ -246,17 +250,17 @@
       <thead class="table__header">
         <tr>
           <th class="table__header-position"
-            >{getTextByLang('position', lang)}</th
+            >{getTextByLang("position", lang)}</th
           >
-          <th>{getTextByLang('model', lang)}</th>
-          <th class="table__row-sort" on:click={() => sortBy('pass@1')}>
+          <th>{getTextByLang("model", lang)}</th>
+          <th class="table__row-sort" on:click={() => sortBy("pass@1")}>
             <div class="cell-wrapper">
               pass@1
-              {#if currentSortKey === 'pass@1'}
-                {#if sortDirection === 'asc'}
+              {#if currentSortKey === "pass@1"}
+                {#if sortDirection === "asc"}
                   ↑
                 {/if}
-                {#if sortDirection === 'desc'}
+                {#if sortDirection === "desc"}
                   ↓
                 {/if}
               {:else}
@@ -264,14 +268,14 @@
               {/if}
             </div>
           </th>
-          <th class="table__row-sort" on:click={() => sortBy('pass1_std')}>
+          <th class="table__row-sort" on:click={() => sortBy("pass1_std")}>
             <div class="cell-wrapper">
               pass1_std
-              {#if currentSortKey === 'pass1_std'}
-                {#if sortDirection === 'asc'}
+              {#if currentSortKey === "pass1_std"}
+                {#if sortDirection === "asc"}
                   ↑
                 {/if}
-                {#if sortDirection === 'desc'}
+                {#if sortDirection === "desc"}
                   ↓
                 {/if}
               {:else}
@@ -279,14 +283,14 @@
               {/if}
             </div>
           </th>
-          <th class="table__row-sort" on:click={() => sortBy('pass@6')}>
+          <th class="table__row-sort" on:click={() => sortBy("pass@6")}>
             <div class="cell-wrapper">
               pass@6
-              {#if currentSortKey === 'pass@6'}
-                {#if sortDirection === 'asc'}
+              {#if currentSortKey === "pass@6"}
+                {#if sortDirection === "asc"}
                   ↑
                 {/if}
-                {#if sortDirection === 'desc'}
+                {#if sortDirection === "desc"}
                   ↓
                 {/if}
               {:else}
@@ -294,14 +298,14 @@
               {/if}
             </div>
           </th>
-          <th class="table__row-sort" on:click={() => sortBy('n_task')}>
+          <th class="table__row-sort" on:click={() => sortBy("n_task")}>
             <div class="cell-wrapper">
-              {getTextByLang('tasks', lang)}
-              {#if currentSortKey === 'n_task'}
-                {#if sortDirection === 'asc'}
+              {getTextByLang("tasks", lang)}
+              {#if currentSortKey === "n_task"}
+                {#if sortDirection === "asc"}
                   ↑
                 {/if}
-                {#if sortDirection === 'desc'}
+                {#if sortDirection === "desc"}
                   ↓
                 {/if}
               {:else}
@@ -310,7 +314,7 @@
               <!-- ↕ -->
             </div>
           </th>
-          <th class="table__header-link">{getTextByLang('trajectory', lang)}</th
+          <th class="table__header-link">{getTextByLang("trajectory", lang)}</th
           >
         </tr>
       </thead>
@@ -322,9 +326,9 @@
               ></td
             >
             <td class="table__row-cell">{row.model}</td>
-            <td>{row['pass@1'].toFixed(2)}%</td>
-            <td>{row['pass1_std'].toFixed(2)}</td>
-            <td>{row['pass@6'].toFixed(2)}%</td>
+            <td>{row["pass@1"].toFixed(2)}%</td>
+            <td>{row["pass1_std"].toFixed(2)}</td>
+            <td>{row["pass@6"].toFixed(2)}%</td>
             <td>{row.n_task}</td>
             <td
               ><a class="table__row-link" href={row.trajectory} target="_blank"
@@ -337,7 +341,7 @@
     </table>
   {:else}
     <div class="table__no-data-wrapper">
-      <span>{getTextByLang('notExistedData', lang)}</span>
+      <span>{getTextByLang("notExistedData", lang)}</span>
     </div>
   {/if}
 </section>
@@ -465,7 +469,7 @@
     position: relative;
     color: #7d8da5;
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;

@@ -43,6 +43,7 @@
 <header class="header">
   <a href="/demo-swe-mera"><img class="header-logo" src={headerLogo} alt="логотип" /></a>
   <div class="toggle-wrapper">
+    <!-- Пока убрали эту кнопку, мб вернем) -->
     <!-- <NavigateButton
       buttonText={getTextByLang('home', lang)}
       imgSrc={HomeIcon}
