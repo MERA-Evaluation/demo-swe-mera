@@ -16,7 +16,7 @@
 <section class="description">
   <TextBlock headerBlock={getTextByLang("headerBlockFirst", lang)}>
     <article class="description__text-wrapper">
-      {getTextByLang("textBlockFirst", lang)}
+      {@html getTextByLang("textBlockFirst", lang)}
     </article>
   </TextBlock>
 </section>
@@ -33,12 +33,10 @@
   }
 
   .description__text-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding-left: 30px;
     padding-right: 30px;
+    line-height: 1.2em;
   }
 
   @media (max-width: 500px) {

@@ -1,20 +1,24 @@
 <script>
-  import router from 'page';
-  import NavigateButton from './components/NavigateButton.svelte';
-  import LeaderBoardIcon from './assets/leaderBoarIcon.svg';
-  import routes from './routes';
-  import ToggleSwitch from './components/ToggleSwitch.svelte';
-  import { getContext, onDestroy, setContext } from 'svelte';
-  import { language } from './store/languageStore';
-  import { getTextByLang } from './utils/getTextByLang';
-  import logoMera from '/logo.svg';
-  import headerLogo from '/headerLogo.svg';
+  import router from "page";
+  import NavigateButton from "./components/NavigateButton.svelte";
+  import LeaderBoardIcon from "./assets/leaderBoarIcon.svg";
+  import routes from "./routes";
+  import ToggleSwitch from "./components/ToggleSwitch.svelte";
+  import { getContext, onDestroy, setContext } from "svelte";
+  import { language } from "./store/languageStore";
+  import { getTextByLang } from "./utils/getTextByLang";
+  import LinksHeaderButton from "./components/LinksHeaderButton.svelte";
+  import logoMera from "/logo.svg";
+  import headerLogo from "/headerLogo.svg";
+  import dataLogo from '/dataLogo.svg';
+  import codeLogo from '/codeLogo.svg';
+  import cupLogo from '/cupLogo.svg';
   let page;
   let params;
 
-  setContext('language', language);
+  setContext("language", language);
 
-  const languageStore = getContext('language');
+  const languageStore = getContext("language");
   let lang;
 
   const unsubscribe = languageStore.subscribe((value) => {
@@ -33,30 +37,35 @@
 
       () => {
         page = route.component;
-      },
+      }
     );
   });
+
+  // router.base("/#");
 
   router.start();
 </script>
 
 <header class="header">
-  <a href="/demo-swe-mera"><img class="header-logo" src={headerLogo} alt="логотип" /></a>
+  <a href="/demo-swe-mera"
+    ><img class="header-logo" src={headerLogo} alt="логотип" /></a
+  >
   <div class="toggle-wrapper">
+    <!-- Пока убрали эту кнопку, мб вернем) -->
     <!-- <NavigateButton
       buttonText={getTextByLang('home', lang)}
       imgSrc={HomeIcon}
       link="/"
     /> -->
     <NavigateButton
-      buttonText={getTextByLang('leaderboard', lang)}
+      buttonText={getTextByLang("leaderboard", lang)}
       imgSrc={LeaderBoardIcon}
       link="/demo-swe-mera/leaderboard"
     />
     <ToggleSwitch
       bind:value={$language}
       design="multi"
-      options={['eng', 'ru']}
+      options={["eng", "ru"]}
       fontSize={14}
       label=""
     />
@@ -66,8 +75,26 @@
 <div class="intro-text">
   <img class="intro-logo" src={logoMera} alt="Логотип" />
   <h1 class="intro__title">
-    {getTextByLang('header', lang)}
+    {getTextByLang("header", lang)}
   </h1>
+
+  <div class="intro-text__buttons-links">
+    <LinksHeaderButton
+      buttonText="Code"
+      imgSrc={codeLogo}
+      link="/demo-swe-mera/leaderboard"
+    />
+    <LinksHeaderButton
+      buttonText="Dataset"
+      imgSrc={dataLogo}
+      link="/demo-swe-mera/leaderboard"
+    />
+    <LinksHeaderButton
+      buttonText="Submit"
+      imgSrc={cupLogo}
+      link="/demo-swe-mera/leaderboard"
+    />
+  </div>
 </div>
 <main class="main-wrapper">
   <svelte:component this={page} {params} />
@@ -119,6 +146,12 @@
     text-align: center;
   }
 
+  .intro-text__buttons-links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
   .intro-logo {
     width: 596px;
     height: 156px;
@@ -156,7 +189,7 @@
       padding-left: 10px;
       padding-right: 10px;
       width: 375px;
-      height: 100px;
+      height: 75px;
     }
 
     .intro-logo {
@@ -171,7 +204,6 @@
     .main-wrapper {
       margin-top: 10px;
       margin-bottom: 20px;
-      max-height: 500px;
     }
   }
 </style>
