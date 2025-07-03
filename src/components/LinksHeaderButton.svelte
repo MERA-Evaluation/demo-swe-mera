@@ -17,7 +17,7 @@
   .link-wrapper {
     font-size: clamp(0.6875rem, 0.5074rem + 0.6863vw, 1.125rem);
     display: flex;
-    gap: 2px;
+    justify-content: space-around;
     padding: 5px 10px;
     border-radius: 10px;
     border: 1px solid #fff;
