@@ -81,17 +81,17 @@
     <LinksHeaderButton
       buttonText="Code"
       imgSrc={codeLogo}
-      link="/demo-swe-mera/leaderboard"
+      link="http://github.com"
     />
     <LinksHeaderButton
       buttonText="Dataset"
       imgSrc={dataLogo}
-      link="/demo-swe-mera/leaderboard"
+      link="https://huggingface.co/"
     />
     <LinksHeaderButton
       buttonText="Submit"
       imgSrc={cupLogo}
-      link="/demo-swe-mera/leaderboard"
+      link="http://github.com"
     />
   </div>
 </div>
