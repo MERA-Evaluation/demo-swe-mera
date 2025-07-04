@@ -86,7 +86,7 @@
     const std = (arr: number[]) => {
       const m = mean(arr);
       return (
-        Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length) * 100
+        Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0)) / (arr.length) * 100
       );
     };
 
