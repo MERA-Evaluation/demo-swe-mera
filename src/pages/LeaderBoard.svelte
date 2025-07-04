@@ -108,7 +108,7 @@
         //std(pass1) / Math.sqrt(tasksLength),
         "pass@6": mean(pass6) * 100,
         n_task: tasksLength,
-        trajectory: `https://github.com/MERA-Evaluation/SWE-MERA-submissions/submissions/aider/${model}`,
+        trajectory: `https://github.com/MERA-Evaluation/SWE-MERA-submissions/tree/main/submissions/${model}`,
       };
     });
 
