@@ -81,17 +81,17 @@
     <LinksHeaderButton
       buttonText="Code"
       imgSrc={codeLogo}
-      link="http://github.com"
+      link="https://github.com/MERA-Evaluation/repotest"
     />
     <LinksHeaderButton
       buttonText="Dataset"
       imgSrc={dataLogo}
-      link="https://huggingface.co/"
+      link="https://huggingface.co/datasets/MERA-evaluation/SWE-MERA"
     />
     <LinksHeaderButton
       buttonText="Submit"
       imgSrc={cupLogo}
-      link="http://github.com"
+      link="https://github.com/MERA-Evaluation/SWE-MERA-submissions"
     />
   </div>
 </div>
