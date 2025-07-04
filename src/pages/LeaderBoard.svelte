@@ -81,14 +81,20 @@
       {} as Record<string, DataRow[]>
     );
 
-    const mean = (arr: number[]) =>
-      (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
+    //const mean = (arr: number[]) =>
+    //  (arr.reduce((a, b) => a + b, 0) / arr.length) * 100;
+    const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
     const std = (arr: number[]) => {
       const m = mean(arr);
-      return (
-        Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0)) / (arr.length) * 100
-      );
+      return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length);
     };
+
+    //const std = (arr: number[]) => {
+    //  const m = mean(arr);
+    //  return (
+    //    Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0)) / (arr.length) * 100
+    //  );
+    //};
 
     const summary = Object.entries(grouped).map(([model, rows]) => {
       const pass1 = rows.map((r) => r["pass@1"]);
@@ -97,9 +103,10 @@
       return {
         modelIdx: 0,
         model,
-        "pass@1": mean(pass1),
-        pass1_std: std(pass1) / Math.sqrt(tasksLength),
-        "pass@6": mean(pass6),
+        "pass@1": mean(pass1) * 100,
+        "pass1_std": std(pass1) / Math.sqrt(tasksLength) * 100, 
+        //std(pass1) / Math.sqrt(tasksLength),
+        "pass@6": mean(pass6) * 100,
         n_task: tasksLength,
         trajectory: `https://github.com/MERA-Evaluation/SWE-MERA-submissions/submissions/aider/${model}`,
       };
