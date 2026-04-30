@@ -1,0 +1,100 @@
+{
+  "models": [
+    {
+      "name": "aider-Codestral-v0.1",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-DeepSeek-R1-DQ32B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Devstral-24B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Llama-3.3-70B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-QwQ-32B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Qwen2.5-Coder-14B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Qwen2.5-Coder-32B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Qwen2.5-Coder-7B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-Qwen3-32B",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "aider-deepseek-r1",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-glm-4.7-flash",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-gpt-oss-120b",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-minimax_2_5",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-qwen3_235b_a22b_instruct",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-qwen3_coder_30b",
+      "files": {
+        "results": "results.jsonl"
+      }
+    },
+    {
+      "name": "msa-qwen3_coder_next",
+      "files": {
+        "results": "results.jsonl"
+      }
+    }
+  ]
+}
